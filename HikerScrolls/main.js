@@ -10527,7 +10527,7 @@ function generateJournalMarkdownV4(config, routes, locations) {
     elevation_loss: r.stats?.elevationLossM || 0,
     sortOrder: r.sortOrder || 0
   }));
-  lines.push(`routes_json: '${JSON.stringify(routesMeta)}'`);
+  lines.push(`routes_json: '${JSON.stringify(routesMeta).replace(/'/g, "''")}'`);
   // Aggregate stats
   const totalDist = routes.reduce((s, r) => s + (r.stats?.distanceKm || 0), 0);
   const totalGain = routes.reduce((s, r) => s + (r.stats?.elevationGainM || 0), 0);
@@ -10606,7 +10606,7 @@ function generateJournalMarkdownV5(config, routes, locations, sections) {
     elevation_loss: r.stats?.elevationLossM || 0,
     sortOrder: r.sortOrder || 0
   }));
-  lines.push(`routes_json: '${JSON.stringify(routesMeta)}'`);
+  lines.push(`routes_json: '${JSON.stringify(routesMeta).replace(/'/g, "''")}'`);
   // NEW: Locations in frontmatter — GPS data safe from body edits
   const locsMeta = locations.map((loc) => ({
     id: loc.id,
@@ -10624,7 +10624,7 @@ function generateJournalMarkdownV5(config, routes, locations, sections) {
     })),
     sort: loc.sortOrder || 0
   }));
-  lines.push(`locations_json: '${JSON.stringify(locsMeta)}'`);
+  lines.push(`locations_json: '${JSON.stringify(locsMeta).replace(/'/g, "''")}'`);
   // Aggregate stats
   const totalDist = routes.reduce((s, r) => s + (r.stats?.distanceKm || 0), 0);
   const totalGain = routes.reduce((s, r) => s + (r.stats?.elevationGainM || 0), 0);
@@ -11841,10 +11841,10 @@ var LibraryView = class extends import_obsidian2.ItemView {
       if (!content.includes("type: hiking-journal"))
         continue;
       // V4: Check for routes_json first (multi-GPX)
-      const routesJsonMatch = content.match(/^routes_json:\s*'([^']+)'/m);
+      const routesJsonMatch = content.match(/^routes_json:\s*'((?:[^']|'')+)'/m);
       if (routesJsonMatch) {
         try {
-          const routes = JSON.parse(routesJsonMatch[1]);
+          const routes = JSON.parse(routesJsonMatch[1].replace(/''/g, "'"));
           let colorIdx = 0;
           for (const route of routes) {
             if (!route.gpx) continue;
@@ -13123,8 +13123,10 @@ var TripView = class extends import_obsidian3.ItemView {
       if (this.hasTrack) {
         const d1 = this.pts[fi].trackDist;
         const d2 = fi < this.pts.length - 1 ? this.pts[fi + 1].trackDist : this.totalDist;
-        targetDist = d1 + (d2 - d1) * fp;
-        const tip = interpAt(targetDist, this.route, this.routeDists);
+        const tipDist = d1 + (d2 - d1) * fp;
+        // Route line: first segment fills from START (0), others fill normally
+        targetDist = fi === 0 ? fp * d1 : tipDist;
+        const tip = interpAt(tipDist, this.route, this.routeDists);
         tipX = tip.x;
         tipY = tip.y;
       } else {
@@ -13145,8 +13147,12 @@ var TripView = class extends import_obsidian3.ItemView {
         if (Math.abs(this.userOffY) < 0.5)
           this.userOffY = 0;
       }
-      this.cx += (tcx - this.cx) * 0.18;
-      this.cy += (tcy - this.cy) * 0.18;
+      // Adaptive lerp: fast catch-up when camera is far behind, smooth when close
+      const camDx = tcx - this.cx, camDy = tcy - this.cy;
+      const camGap = Math.sqrt(camDx * camDx + camDy * camDy);
+      const lerp = camGap > TILE * 3 ? 0.5 : camGap > TILE ? 0.3 : 0.18;
+      this.cx += camDx * lerp;
+      this.cy += camDy * lerp;
       this.mGrp?.setAttribute("transform", `translate(${this.cx},${this.cy})`);
       // Only sync tiles when camera has moved enough (> 1 tile worth)
       if (Math.abs(this.cx - this._lastTileCx) > TILE / 2 || Math.abs(this.cy - this._lastTileCy) > TILE / 2) {
@@ -13246,8 +13252,12 @@ var TripView = class extends import_obsidian3.ItemView {
     }
     // Tip = map dot position (already smoothed by camera lerp)
     const tx = tipX + this.cx, ty = tipY + this.cy;
-    // Scroll viewport for scroll-based transition
-    const scrollRect = this.scrollEl.getBoundingClientRect();
+    // Cache scrollRect — only changes on resize, not every frame
+    if (!this._scrollRect || this._scrollRectAge++ > 30) {
+      this._scrollRect = this.scrollEl.getBoundingClientRect();
+      this._scrollRectAge = 0;
+    }
+    const scrollRect = this._scrollRect;
     const scrollH = scrollRect.height;
     for (let i2 = 0; i2 < wraps.length; i2++) {
       const ir = wraps[i2].getBoundingClientRect();
@@ -17656,14 +17666,17 @@ var HJSettingTab = class extends import_obsidian5.PluginSettingTab {
     new import_obsidian5.Setting(containerEl)
       .setName("Stadia Maps API Key")
       .setDesc("Free API key from stadiamaps.com — required for Stamen Toner / Watercolor tiles. Leave empty to disable those map styles.")
-      .addText((text) => text
-        .setPlaceholder("Enter your API key")
-        .setValue(this.plugin.settings.stadiaApiKey)
-        .onChange(async (value) => {
-          this.plugin.settings.stadiaApiKey = value.trim();
-          STADIA_API_KEY = this.plugin.settings.stadiaApiKey;
-          await this.plugin.saveSettings();
-        }));
+      .addText((text) => {
+        text.inputEl.type = "password";
+        text
+          .setPlaceholder("Enter your API key")
+          .setValue(this.plugin.settings.stadiaApiKey)
+          .onChange(async (value) => {
+            this.plugin.settings.stadiaApiKey = value.trim();
+            STADIA_API_KEY = this.plugin.settings.stadiaApiKey;
+            await this.plugin.saveSettings();
+          });
+      });
     containerEl.createEl("h3", { text: "AI Features (Gemini)" });
     new import_obsidian5.Setting(containerEl)
       .setName("Gemini API Key")
@@ -17952,9 +17965,9 @@ var HikingJournalPlugin = class extends import_obsidian5.Plugin {
           for (const md of mdFiles) {
             const content = await this.app.vault.read(md);
             if (!content.includes("type: hiking-journal")) continue;
-            const routesJsonMatch = content.match(/^routes_json:\s*'([^']+)'/m);
+            const routesJsonMatch = content.match(/^routes_json:\s*'((?:[^']|'')+)'/m);
             if (routesJsonMatch) {
-              const routes = JSON.parse(routesJsonMatch[1]);
+              const routes = JSON.parse(routesJsonMatch[1].replace(/''/g, "'"));
               let ci = 0;
               for (const route of routes) {
                 if (!route.gpx) continue;
