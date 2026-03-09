@@ -4,17 +4,19 @@
     "type": "split",
     "children": [
       {
-        "id": "8332b2878935bc44",
+        "id": "48d9abf2b3365ca0",
         "type": "tabs",
         "children": [
           {
-            "id": "500486ca03a440f0",
+            "id": "187ef53c936d05f3",
             "type": "leaf",
             "state": {
-              "type": "hiking-journal-library",
-              "state": {},
+              "type": "hiking-journal-trip",
+              "state": {
+                "tripId": "demo"
+              },
               "icon": "hiking-journal",
-              "title": "HikerScrolls"
+              "title": "Demo"
             }
           }
         ]
@@ -40,7 +42,7 @@
                 "autoReveal": false
               },
               "icon": "lucide-folder-closed",
-              "title": "文件列表"
+              "title": "Files"
             }
           },
           {
@@ -74,8 +76,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "right": {
     "id": "7c62ab0e619e3c02",
@@ -160,7 +161,7 @@
             }
           },
           {
-            "id": "fca9a105becc08fd",
+            "id": "1cbb3babcada8743",
             "type": "leaf",
             "state": {
               "type": "hiking-journal-timeline",
@@ -174,23 +175,38 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "left-ribbon": {
     "hiddenItems": {
-      "switcher:打开快速切换": false,
-      "graph:查看关系图谱": false,
-      "canvas:新建白板": false,
-      "daily-notes:打开/创建今天的日记": false,
-      "templates:插入模板": false,
-      "command-palette:打开命令面板": false,
-      "bases:新建数据库": false,
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false,
+      "bases:Create new base": false,
       "hiker-scrolls:HikerScrolls": false
     }
   },
-  "active": "500486ca03a440f0",
+  "active": "187ef53c936d05f3",
   "lastOpenFiles": [
+    "hiking-journal/index.json",
+    "hiking-journal/demo/demo.md",
+    "hiking-journal/demo/Miami Trip.gpx",
+    "hiking-journal/demo/photos/IMG20250715173655.jpg",
+    "hiking-journal/demo/photos/IMG20250715163830.jpg",
+    "hiking-journal/demo/photos/IMG20250715162326-7d23c70f4a21.jpg",
+    "hiking-journal/demo/photos/IMG20250715160114.jpg",
+    "hiking-journal/demo/photos/IMG20250715155520.jpg",
+    "hiking-journal/demo/photos/IMG20250715155502.jpg",
+    "hiking-journal/demo/photos/IMG20250715154948.jpg",
+    "hiking-journal/demo/photos/IMG20250715154444.jpg",
+    "hiking-journal/demo/photos/IMG_20250715_181842.jpg",
+    "hiking-journal/demo/photos/IMG_20250715_181633.jpg",
+    "hiking-journal/demo/photos",
+    "hiking-journal/demo",
+    "hiking-journal",
     "欢迎.md"
   ]
 }

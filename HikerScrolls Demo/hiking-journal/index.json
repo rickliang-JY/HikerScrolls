@@ -1,0 +1,18 @@
+{
+  "version": 1,
+  "trips": [
+    {
+      "id": "demo",
+      "name": "Demo",
+      "region": "Miami, FL",
+      "date": "2026-03-09",
+      "description": "",
+      "waypointCount": 12,
+      "routeCount": 1,
+      "distanceKm": 6.29,
+      "centerLat": 25.778730166666666,
+      "centerLng": -80.18758896759262,
+      "updatedAt": "2026-03-09T04:23:16.112Z"
+    }
+  ]
+}
