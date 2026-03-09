@@ -160,7 +160,7 @@ your-vault/
 
 <div align="center">
 
-**HikerScrolls** is made by [@rickliang-JY](https://github.com/rickliang-JY)
+**HikerScrolls** is made by [@rickliang-JY](https://github.com/rickliang-JY) [@klxd2000](https://github.com/klxd2000)
 
 MIT License
 
