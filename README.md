@@ -119,10 +119,6 @@ HikerScrolls integrates with **Google Gemini** to help you build journals faster
 3. Drop the files in
 4. Restart Obsidian -> **Settings -> Community Plugins -> Enable HikerScrolls**
 
-### Try the Demo
-
-Open the included `HikerScrolls Demo/` folder as an Obsidian vault to see the plugin in action immediately.
-
 ### Configure (optional)
 
 In **Settings -> HikerScrolls**:
@@ -157,7 +153,7 @@ your-vault/
 
 ## Acknowledgements
 
-The scrollytelling concept in HikerScrolls is inspired by [Koya Bound](https://walkkumano.com) by Craig Mod — a beautiful digital book about walking the Kumano Kodo pilgrimage trail. Their pioneering work in scroll-driven map narratives showed what's possible when stories and geography move together.
+The scrollytelling design of HikerScrolls is inspired by [Koya Bound](https://walkkumano.com) by Craig Mod — a beautiful digital book about walking the Kumano Kodo pilgrimage trail. Their pioneering work in scroll-driven map narratives showed what's possible when stories and geography move together. All code in HikerScrolls is independently implemented.
 
 ## Built With
 

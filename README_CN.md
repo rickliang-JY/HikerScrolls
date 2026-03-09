@@ -109,10 +109,6 @@
 3. 放入文件
 4. 重启 Obsidian -> **设置 -> 第三方插件 -> 启用 HikerScrolls**
 
-### 试用演示
-
-打开附带的 `HikerScrolls Demo/` 文件夹作为 Obsidian 库，即可立即体验插件。
-
 ### 配置（可选）
 
 在 **设置 -> HikerScrolls** 中：
@@ -147,7 +143,7 @@ your-vault/
 
 ## 致谢
 
-HikerScrolls 的滚动叙事概念受到 Craig Mod 的 [Koya Bound](https://walkkumano.com) 启发 — 一本关于行走熊野古道朝圣之路的精美数字书籍。
+HikerScrolls 的滚动叙事设计受到 Craig Mod 的 [Koya Bound](https://walkkumano.com) 启发 — 一本关于行走熊野古道朝圣之路的精美数字书籍。HikerScrolls 的所有代码均为独立实现。
 
 ## 构建技术
 

@@ -1,8 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="none" stroke="#333">
-  <!-- Journal cover -->
-  <rect x="20" y="10" width="60" height="78" rx="5" stroke-width="5"/>
-  <!-- Spine line -->
-  <line x1="20" y1="26" x2="80" y2="26" stroke-width="3.5"/>
-  <!-- Mountain peaks inside the page -->
-  <path d="M28 74 L46 34 L54 46 L68 28 L78 48" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>
-</svg>
