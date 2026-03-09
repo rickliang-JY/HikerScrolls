@@ -10351,6 +10351,437 @@ __export(main_exports, {
 });
 module.exports = __toCommonJS(main_exports);
 var import_obsidian5 = require("obsidian");
+// src/i18n.ts
+var HJ_LOCALES = {
+  en: {
+    // === Commands & Ribbon ===
+    "ribbon.label": "HikerScrolls",
+    "cmd.openLibrary": "Open Trip Library",
+    "cmd.openTimeline": "Open Journal Timeline",
+    "cmd.newJournal": "New Journal (Wizard)",
+
+    // === Settings ===
+    "settings.title": "HikerScrolls Settings",
+    "settings.motto": "Everybody can tell their own story on the road.",
+    "settings.language": "Language",
+    "settings.languageDesc": "Interface language / 界面语言",
+    "settings.langAuto": "Auto (System)",
+    "settings.stadiaName": "Stadia Maps API Key",
+    "settings.stadiaDesc": "Free API key from stadiamaps.com \u2014 required for Stamen Toner / Watercolor tiles. Leave empty to disable those map styles.",
+    "settings.stadiaPlaceholder": "Enter your API key",
+    "settings.aiTitle": "AI Features (Gemini)",
+    "settings.geminiName": "Gemini API Key",
+    "settings.geminiDesc": "Google Gemini API key for AI-assisted location detection and enrichment. Get one free at aistudio.google.com.",
+    "settings.geminiPlaceholder": "Enter your Gemini API key",
+    "settings.modelName": "Gemini Model",
+    "settings.modelDesc": "Select the Gemini model for AI analysis and enrichment.",
+
+    // === Wizard Step 1 ===
+    "step1.titleNew": "Step 1: Trip Info",
+    "step1.titleEdit": "Step 1: Upload Route(s)",
+    "step1.hintNew": "Basic information and route files for your hiking trip.",
+    "step1.hintEdit": "Upload GPX route file(s) to add to the existing journal.",
+    "step1.tripName": "Trip Name *",
+    "step1.tripNamePh": "e.g. Kumano Kodo Pilgrimage",
+    "step1.startDate": "Start Date",
+    "step1.endDate": "End Date",
+    "step1.region": "Region",
+    "step1.regionPh": "e.g. Kii Peninsula, Japan",
+    "step1.description": "Description (optional)",
+    "step1.descPh": "Brief description of your trip...",
+    "step1.mapStyle": "Map Style",
+    "step1.routeFiles": "Route Files (optional, supports multiple)",
+    "step1.dropGpx": "Drop .gpx / .kml / .kmz / .fit / .plt files (multiple supported)",
+    "step1.routeNamePh": "Route name (e.g. Day 1)",
+    "step1.nextLabel": "Next: Select Locations \u2192",
+    "step1.enterName": "Please enter a trip name",
+    "step1.uploadRoute": "Please upload at least one route file",
+
+    // === Wizard Step 2 ===
+    "step2.title": "Step 2: Select Locations",
+    "step2.modeLabel": "Location mode:",
+    "step2.manual": "\u270b Manual",
+    "step2.aiAssisted": "AI-Assisted (Gemini)",
+    "step2.aiDisabled": "Set Gemini API key in Settings first",
+    "step2.aiWarn": "Set Gemini API key in plugin Settings to enable",
+    "step2.backLabel": "\u2190 Back",
+    "step2.nextLabel": "Next: Upload Photos \u2192",
+    "step2.noLocation": "Please add at least one location or route",
+    "step2.manualHint": "Click on the route to add locations with precise GPX coordinates, or use the buttons below.",
+    "step2.addLocation": "+ Add Location",
+    "step2.autoGenerate": "Auto-generate stops",
+    "step2.emptyHint": "No locations yet. Click on the route to add stops, or use the buttons above.",
+    "step2.locationNamePh": "Location name",
+    "step2.aiInfo": "AI Info",
+    "step2.aiInfoTitle": "Get historical and travel information from AI for this location",
+    "step2.loading": "Loading...",
+    "step2.aiInfoAdded": "AI info added for: ",
+    "step2.aiInfoFailed": "Could not get AI info for this location",
+    "step2.aiHint": "Upload all your photos. Gemini will analyze each photo to suggest geographic locations. Review and adjust the results before continuing.",
+    "step2.uploadTitle": "Upload Photos for AI Analysis",
+    "step2.dropPhotos": "Drop all your trip photos here or click to browse",
+    "step2.dropPhotosSub": "AI will analyze each photo to identify its location",
+    "step2.analyzeBtn": "Analyze with Gemini",
+    "step2.clusterRadius": "Cluster radius:",
+    "step2.clusterUnit": "m",
+    "step2.clusterBtn": "\u22a4 Cluster Nearby",
+    "step2.mergeSel": "Merge Selected",
+    "step2.reviewTitle": " Detected \u2014 Review & Edit",
+    "step2.noCluster": "No points close enough to cluster.",
+    "step2.addManually": "+ Add Location Manually",
+    "step2.uploadFirst": "Please upload photos first",
+    "step2.badgeGps": "GPS",
+    "step2.badgeHigh": "High",
+    "step2.badgeMid": "Mid",
+    "step2.badgeUnknown": "?",
+    "step2.badgeManual": "Manual",
+    "step2.gpsSkipped": "GPS \u2014 skipped",
+    "step2.analyzing": "analyzing...",
+    "step2.namingGps": "Naming GPS location",
+
+    // === Wizard Step 3 ===
+    "step3.title": "Step 3: Photos",
+    "step3.hint": "Upload photos then drag them into location pools. Click a location or map pin to select it.",
+    "step3.dropUpload": "Drop photos here or click to browse",
+    "step3.dropSub": "New photos are added to the Unassigned pool",
+    "step3.dropHere": "Drop photos here",
+    "step3.unassigned": "Unassigned",
+    "step3.backLabel": "\u2190 Back",
+    "step3.nextLabel": "Next: Edit Blog \u2192",
+
+    // === Wizard Step 4 ===
+    "step4.title": "Step 4: Blog Sections",
+    "step4.hint": "Create sections for your blog, then check locations to assign them. Locations are listed in route order.",
+    "step4.routeNamePh": "Route / Day name",
+    "step4.sectionPh": "Section title",
+    "step4.blogPh": "Write your story for this section...",
+    "step4.addSection": "+ Add Section",
+    "step4.deleteSection": "Delete section",
+    "step4.backLabel": "\u2190 Back",
+    "step4.nextLabel": "Next: Review & Generate \u2192",
+
+    // === Wizard Step 5 ===
+    "step5.titleNew": "Step 5: Review & Generate",
+    "step5.titleEdit": "Step 5: Review & Append",
+    "step5.addingTo": "Adding to journal: ",
+    "step5.routes": "route(s)",
+    "step5.locations": "location(s)",
+    "step5.photos": "photo(s)",
+    "step5.totalDist": "Total distance: ",
+    "step5.previewMd": "Preview Markdown",
+    "step5.hidePreview": "Hide Preview",
+    "step5.structureOutline": "Structure Outline",
+    "step5.output": "Output",
+    "step5.outputMd": "Single Markdown file with all sections and photo embeds",
+    "step5.outputPhotos": "Photos copied into the trip folder alongside the .md file",
+    "step5.outputRoutes": "route file(s) included",
+    "step5.outputEdit": "Edit the .md file directly in Obsidian to update your journal",
+    "step5.generateBtn": "Generate Journal",
+    "step5.appendBtn": "Append to Journal",
+    "step5.backLabel": "\u2190 Back",
+
+    // === Library / Atlas ===
+    "lib.openJournal": "Open Journal",
+    "lib.addRoute": "+ Add Route",
+    "lib.aiSummary": "AI Summary",
+    "lib.aiSummaryTitle": "AI Trip Summary",
+    "lib.setApiKey": "Set Gemini API key in Settings",
+    "lib.delete": "\ud83d\uddd1 Delete",
+    "lib.deleteConfirm": "Delete",
+    "lib.analyzing": "Analyzing...",
+    "lib.logo": "hiking journal",
+    "lib.newJournal": "+ New Journal",
+    "lib.stats.trips": "trips",
+    "lib.stats.km": "km",
+    "lib.stats.regions": "regions",
+
+    // === Timeline ===
+    "timeline.title": "Journal Timeline",
+    "timeline.backToAtlas": "Back to Atlas",
+    "timeline.searchPh": "Search journals...",
+    "timeline.empty": "No journals yet.",
+    "timeline.noMatch": "No matching journals.",
+    "timeline.unknown": "Unknown",
+
+    // === Trip View ===
+    "trip.stops": "stops",
+    "trip.elev": "m elev.",
+    "trip.start": "START",
+    "trip.finish": "FINISH",
+
+    // === Notices ===
+    "notice.appendingRoutes": "Appending routes...",
+    "notice.appendSuccess": "Routes appended successfully!",
+    "notice.generatingJournal": "Generating journal...",
+    "notice.journalCreated": "Journal created: ",
+    "notice.importingPhotos": "Importing {0} photos...",
+    "notice.imported": "\u2705 Imported {0} photos ({1} with GPS)",
+    "notice.noImages": "No image files found",
+    "notice.unsupported": "Unsupported format: ",
+    "notice.failedImport": "Failed to import {0}: {1}",
+    "notice.cannotOpen": "Cannot open trip",
+    "notice.failed": "Failed: ",
+    "notice.importedRoutes": "Imported {0} route file(s)",
+    "notice.generatedStops": "Generated {0} location stops",
+
+    // === Quick Add Wizard (legacy) ===
+    "qa.step2.title": "\ud83d\udcf8 Step 2: Import Photos",
+    "qa.step2.hint": "Add your photos. GPS coordinates will be automatically extracted from EXIF data.",
+    "qa.step2.dropText": "Drop photos here or click to browse",
+    "qa.step2.dropSub": "Supports JPG, PNG, HEIC",
+    "qa.step2.noPhotos": "No photos imported yet.",
+    "qa.step2.gps": "\ud83d\udccd GPS",
+    "qa.step2.noGps": "\u274c No GPS",
+    "qa.step2.nextLabel": "Next: Organize Sections \u2192",
+    "qa.step2.needPhotos": "Please import photos or a GPX track file",
+    "qa.step3.title": "\ud83d\udcc2 Step 3: Organize Sections",
+    "qa.step3.hint": "Create sections (H2 = major locations, H3 = sub-sections) and assign photos to each.",
+    "qa.step3.addH2": "+ Add Section (H2)",
+    "qa.step3.addH3": "+ Add Sub-section (H3)",
+    "qa.step3.autoOrg": "\ud83d\udd04 Auto-organize",
+    "qa.step3.noSections": "No sections yet. Click \"Add Section\" or \"Auto-organize\" above.",
+    "qa.step3.addH2First": "Add a main section (H2) first",
+    "qa.step3.nextLabel": "Next: Review & Generate \u2192",
+    "qa.step3.moveTo": "\u2192 Move to...",
+    "qa.step3.untitled": "Untitled",
+    "qa.step3.majorPh": "Major Location Name",
+    "qa.step3.subPh": "Sub-section Name",
+    "qa.step4.title": "\u2705 Step 4: Review & Generate",
+    "qa.step4.sectionOutline": "Section Outline",
+    "qa.step4.output": "Output",
+    "qa.step4.outputMd": "\ud83d\udcc4 One single Markdown file with all sections and photo embeds",
+    "qa.step4.outputPhotos": "\ud83d\uddbc\ufe0f Photos copied into the trip folder alongside the .md file",
+    "qa.step4.outputEdit": "\u2192 Edit the .md file directly in Obsidian to write your stories",
+    "qa.step4.noGpsWarn": "photo(s) without GPS \u2014 fill in the markdown later",
+    "qa.step4.generateBtn": "\ud83d\ude80 Generate Journal",
+    "qa.step4.previewMd": "\ud83d\udc41\ufe0f Preview Markdown",
+    "qa.step4.hidePreview": "\ud83d\ude48 Hide Preview",
+    "qa.step4.gpxStops": "\ud83d\udccd Scroll stops will be auto-generated along the route",
+  },
+  zh: {
+    // === Commands & Ribbon ===
+    "ribbon.label": "HikerScrolls",
+    "cmd.openLibrary": "\u6253\u5f00\u65c5\u884c\u56fe\u4e66\u9986",
+    "cmd.openTimeline": "\u6253\u5f00\u65e5\u5fd7\u65f6\u95f4\u7ebf",
+    "cmd.newJournal": "\u65b0\u5efa\u65e5\u5fd7\uff08\u5411\u5bfc\uff09",
+
+    // === Settings ===
+    "settings.title": "HikerScrolls \u8bbe\u7f6e",
+    "settings.motto": "\u6bcf\u4e2a\u4eba\u90fd\u53ef\u4ee5\u5728\u8def\u4e0a\u8bb2\u8ff0\u81ea\u5df1\u7684\u6545\u4e8b\u3002",
+    "settings.language": "\u8bed\u8a00 / Language",
+    "settings.languageDesc": "\u754c\u9762\u8bed\u8a00 / Interface language",
+    "settings.langAuto": "\u81ea\u52a8 (\u8ddf\u968f\u7cfb\u7edf)",
+    "settings.stadiaName": "Stadia Maps API \u5bc6\u94a5",
+    "settings.stadiaDesc": "\u514d\u8d39\u7684 stadiamaps.com API \u5bc6\u94a5 \u2014 \u7528\u4e8e Stamen Toner / Watercolor \u5730\u56fe\u6837\u5f0f\u3002\u7559\u7a7a\u5219\u7981\u7528\u8fd9\u4e9b\u6837\u5f0f\u3002",
+    "settings.stadiaPlaceholder": "\u8f93\u5165\u60a8\u7684 API \u5bc6\u94a5",
+    "settings.aiTitle": "AI \u529f\u80fd (Gemini)",
+    "settings.geminiName": "Gemini API \u5bc6\u94a5",
+    "settings.geminiDesc": "Google Gemini API \u5bc6\u94a5\uff0c\u7528\u4e8e AI \u8f85\u52a9\u4f4d\u7f6e\u68c0\u6d4b\u548c\u4fe1\u606f\u4e30\u5bcc\u3002\u5728 aistudio.google.com \u514d\u8d39\u83b7\u53d6\u3002",
+    "settings.geminiPlaceholder": "\u8f93\u5165\u60a8\u7684 Gemini API \u5bc6\u94a5",
+    "settings.modelName": "Gemini \u6a21\u578b",
+    "settings.modelDesc": "\u9009\u62e9\u7528\u4e8e AI \u5206\u6790\u548c\u4fe1\u606f\u4e30\u5bcc\u7684 Gemini \u6a21\u578b\u3002",
+
+    // === Wizard Step 1 ===
+    "step1.titleNew": "\u7b2c 1 \u6b65\uff1a\u65c5\u884c\u4fe1\u606f",
+    "step1.titleEdit": "\u7b2c 1 \u6b65\uff1a\u4e0a\u4f20\u8def\u7ebf",
+    "step1.hintNew": "\u586b\u5199\u5f92\u6b65\u65c5\u884c\u7684\u57fa\u672c\u4fe1\u606f\u548c\u8def\u7ebf\u6587\u4ef6\u3002",
+    "step1.hintEdit": "\u4e0a\u4f20 GPX \u8def\u7ebf\u6587\u4ef6\u4ee5\u6dfb\u52a0\u5230\u73b0\u6709\u65e5\u5fd7\u3002",
+    "step1.tripName": "\u65c5\u884c\u540d\u79f0 *",
+    "step1.tripNamePh": "\u4f8b\u5982\uff1a\u718a\u91ce\u53e4\u9053\u671d\u5723\u4e4b\u65c5",
+    "step1.startDate": "\u5f00\u59cb\u65e5\u671f",
+    "step1.endDate": "\u7ed3\u675f\u65e5\u671f",
+    "step1.region": "\u5730\u533a",
+    "step1.regionPh": "\u4f8b\u5982\uff1a\u7eaa\u4f0a\u534a\u5c9b\uff0c\u65e5\u672c",
+    "step1.description": "\u63cf\u8ff0\uff08\u53ef\u9009\uff09",
+    "step1.descPh": "\u7b80\u8981\u63cf\u8ff0\u60a8\u7684\u65c5\u884c...",
+    "step1.mapStyle": "\u5730\u56fe\u6837\u5f0f",
+    "step1.routeFiles": "\u8def\u7ebf\u6587\u4ef6\uff08\u53ef\u9009\uff0c\u652f\u6301\u591a\u4e2a\uff09",
+    "step1.dropGpx": "\u62d6\u653e .gpx / .kml / .kmz / .fit / .plt \u6587\u4ef6\uff08\u652f\u6301\u591a\u4e2a\uff09",
+    "step1.routeNamePh": "\u8def\u7ebf\u540d\u79f0\uff08\u4f8b\u5982\uff1a\u7b2c 1 \u5929\uff09",
+    "step1.nextLabel": "\u4e0b\u4e00\u6b65\uff1a\u9009\u62e9\u5730\u70b9 \u2192",
+    "step1.enterName": "\u8bf7\u8f93\u5165\u65c5\u884c\u540d\u79f0",
+    "step1.uploadRoute": "\u8bf7\u4e0a\u4f20\u81f3\u5c11\u4e00\u4e2a\u8def\u7ebf\u6587\u4ef6",
+
+    // === Wizard Step 2 ===
+    "step2.title": "\u7b2c 2 \u6b65\uff1a\u9009\u62e9\u5730\u70b9",
+    "step2.modeLabel": "\u5730\u70b9\u6a21\u5f0f\uff1a",
+    "step2.manual": "\u270b \u624b\u52a8",
+    "step2.aiAssisted": "AI \u8f85\u52a9 (Gemini)",
+    "step2.aiDisabled": "\u8bf7\u5148\u5728\u8bbe\u7f6e\u4e2d\u914d\u7f6e Gemini API \u5bc6\u94a5",
+    "step2.aiWarn": "\u5728\u63d2\u4ef6\u8bbe\u7f6e\u4e2d\u914d\u7f6e Gemini API \u5bc6\u94a5\u4ee5\u542f\u7528",
+    "step2.backLabel": "\u2190 \u8fd4\u56de",
+    "step2.nextLabel": "\u4e0b\u4e00\u6b65\uff1a\u4e0a\u4f20\u7167\u7247 \u2192",
+    "step2.noLocation": "\u8bf7\u6dfb\u52a0\u81f3\u5c11\u4e00\u4e2a\u5730\u70b9\u6216\u8def\u7ebf",
+    "step2.manualHint": "\u5728\u8def\u7ebf\u4e0a\u70b9\u51fb\u4ee5\u6dfb\u52a0\u7cbe\u786e\u7684 GPX \u5750\u6807\u5730\u70b9\uff0c\u6216\u4f7f\u7528\u4e0b\u65b9\u6309\u94ae\u3002",
+    "step2.addLocation": "+ \u6dfb\u52a0\u5730\u70b9",
+    "step2.autoGenerate": "\u81ea\u52a8\u751f\u6210\u505c\u9760\u70b9",
+    "step2.emptyHint": "\u8fd8\u6ca1\u6709\u5730\u70b9\u3002\u5728\u8def\u7ebf\u4e0a\u70b9\u51fb\u6dfb\u52a0\u505c\u9760\u70b9\uff0c\u6216\u4f7f\u7528\u4e0a\u65b9\u6309\u94ae\u3002",
+    "step2.locationNamePh": "\u5730\u70b9\u540d\u79f0",
+    "step2.aiInfo": "AI \u4fe1\u606f",
+    "step2.aiInfoTitle": "\u4ece AI \u83b7\u53d6\u8be5\u5730\u70b9\u7684\u5386\u53f2\u548c\u65c5\u884c\u4fe1\u606f",
+    "step2.loading": "\u52a0\u8f7d\u4e2d...",
+    "step2.aiInfoAdded": "\u5df2\u6dfb\u52a0 AI \u4fe1\u606f\uff1a",
+    "step2.aiInfoFailed": "\u65e0\u6cd5\u83b7\u53d6\u8be5\u5730\u70b9\u7684 AI \u4fe1\u606f",
+    "step2.aiHint": "\u4e0a\u4f20\u6240\u6709\u7167\u7247\u3002Gemini \u5c06\u5206\u6790\u6bcf\u5f20\u7167\u7247\u4ee5\u5efa\u8bae\u5730\u7406\u4f4d\u7f6e\u3002\u5728\u7ee7\u7eed\u4e4b\u524d\u5ba1\u67e5\u5e76\u8c03\u6574\u7ed3\u679c\u3002",
+    "step2.uploadTitle": "\u4e0a\u4f20\u7167\u7247\u8fdb\u884c AI \u5206\u6790",
+    "step2.dropPhotos": "\u5c06\u6240\u6709\u65c5\u884c\u7167\u7247\u62d6\u653e\u5230\u6b64\u5904\u6216\u70b9\u51fb\u6d4f\u89c8",
+    "step2.dropPhotosSub": "AI \u5c06\u5206\u6790\u6bcf\u5f20\u7167\u7247\u4ee5\u8bc6\u522b\u5176\u4f4d\u7f6e",
+    "step2.analyzeBtn": "\u4f7f\u7528 Gemini \u5206\u6790",
+    "step2.clusterRadius": "\u805a\u7c7b\u534a\u5f84\uff1a",
+    "step2.clusterUnit": "\u7c73",
+    "step2.clusterBtn": "\u22a4 \u805a\u7c7b\u9644\u8fd1",
+    "step2.mergeSel": "\u5408\u5e76\u9009\u4e2d",
+    "step2.reviewTitle": " \u5df2\u68c0\u6d4b \u2014 \u5ba1\u67e5\u548c\u7f16\u8f91",
+    "step2.noCluster": "\u6ca1\u6709\u8db3\u591f\u8fd1\u7684\u70b9\u53ef\u4ee5\u805a\u7c7b\u3002",
+    "step2.addManually": "+ \u624b\u52a8\u6dfb\u52a0\u5730\u70b9",
+    "step2.uploadFirst": "\u8bf7\u5148\u4e0a\u4f20\u7167\u7247",
+    "step2.badgeGps": "GPS",
+    "step2.badgeHigh": "\u9ad8",
+    "step2.badgeMid": "\u4e2d",
+    "step2.badgeUnknown": "?",
+    "step2.badgeManual": "\u624b\u52a8",
+    "step2.gpsSkipped": "GPS \u2014 \u5df2\u8df3\u8fc7",
+    "step2.analyzing": "\u5206\u6790\u4e2d...",
+    "step2.namingGps": "\u6b63\u5728\u547d\u540d GPS \u5730\u70b9",
+
+    // === Wizard Step 3 ===
+    "step3.title": "\u7b2c 3 \u6b65\uff1a\u7167\u7247",
+    "step3.hint": "\u4e0a\u4f20\u7167\u7247\u7136\u540e\u5c06\u5b83\u4eec\u62d6\u5165\u5730\u70b9\u6c60\u3002\u70b9\u51fb\u5730\u70b9\u6216\u5730\u56fe\u56fe\u9489\u8fdb\u884c\u9009\u62e9\u3002",
+    "step3.dropUpload": "\u5c06\u7167\u7247\u62d6\u653e\u5230\u6b64\u5904\u6216\u70b9\u51fb\u6d4f\u89c8",
+    "step3.dropSub": "\u65b0\u7167\u7247\u5c06\u6dfb\u52a0\u5230\u672a\u5206\u914d\u6c60",
+    "step3.dropHere": "\u5c06\u7167\u7247\u62d6\u653e\u5230\u6b64\u5904",
+    "step3.unassigned": "\u672a\u5206\u914d",
+    "step3.backLabel": "\u2190 \u8fd4\u56de",
+    "step3.nextLabel": "\u4e0b\u4e00\u6b65\uff1a\u7f16\u8f91\u535a\u5ba2 \u2192",
+
+    // === Wizard Step 4 ===
+    "step4.title": "\u7b2c 4 \u6b65\uff1a\u535a\u5ba2\u7ae0\u8282",
+    "step4.hint": "\u521b\u5efa\u535a\u5ba2\u7ae0\u8282\uff0c\u7136\u540e\u52fe\u9009\u5730\u70b9\u8fdb\u884c\u5206\u914d\u3002\u5730\u70b9\u6309\u8def\u7ebf\u987a\u5e8f\u6392\u5217\u3002",
+    "step4.routeNamePh": "\u8def\u7ebf / \u5929\u6570\u540d\u79f0",
+    "step4.sectionPh": "\u7ae0\u8282\u6807\u9898",
+    "step4.blogPh": "\u4e3a\u8fd9\u4e2a\u7ae0\u8282\u5199\u4e0b\u4f60\u7684\u6545\u4e8b...",
+    "step4.addSection": "+ \u6dfb\u52a0\u7ae0\u8282",
+    "step4.deleteSection": "\u5220\u9664\u7ae0\u8282",
+    "step4.backLabel": "\u2190 \u8fd4\u56de",
+    "step4.nextLabel": "\u4e0b\u4e00\u6b65\uff1a\u5ba1\u67e5\u548c\u751f\u6210 \u2192",
+
+    // === Wizard Step 5 ===
+    "step5.titleNew": "\u7b2c 5 \u6b65\uff1a\u5ba1\u67e5\u548c\u751f\u6210",
+    "step5.titleEdit": "\u7b2c 5 \u6b65\uff1a\u5ba1\u67e5\u548c\u8ffd\u52a0",
+    "step5.addingTo": "\u6dfb\u52a0\u5230\u65e5\u5fd7\uff1a",
+    "step5.routes": "\u6761\u8def\u7ebf",
+    "step5.locations": "\u4e2a\u5730\u70b9",
+    "step5.photos": "\u5f20\u7167\u7247",
+    "step5.totalDist": "\u603b\u8ddd\u79bb\uff1a",
+    "step5.previewMd": "\u9884\u89c8 Markdown",
+    "step5.hidePreview": "\u9690\u85cf\u9884\u89c8",
+    "step5.structureOutline": "\u7ed3\u6784\u5927\u7eb2",
+    "step5.output": "\u8f93\u51fa",
+    "step5.outputMd": "\u5305\u542b\u6240\u6709\u7ae0\u8282\u548c\u7167\u7247\u5d4c\u5165\u7684\u5355\u4e2a Markdown \u6587\u4ef6",
+    "step5.outputPhotos": "\u7167\u7247\u590d\u5236\u5230\u65c5\u884c\u6587\u4ef6\u5939\u4e2d\uff0c\u4e0e .md \u6587\u4ef6\u5e76\u5217",
+    "step5.outputRoutes": "\u4e2a\u8def\u7ebf\u6587\u4ef6\u5df2\u5305\u542b",
+    "step5.outputEdit": "\u5728 Obsidian \u4e2d\u76f4\u63a5\u7f16\u8f91 .md \u6587\u4ef6\u4ee5\u66f4\u65b0\u65e5\u5fd7",
+    "step5.generateBtn": "\u751f\u6210\u65e5\u5fd7",
+    "step5.appendBtn": "\u8ffd\u52a0\u5230\u65e5\u5fd7",
+    "step5.backLabel": "\u2190 \u8fd4\u56de",
+
+    // === Library / Atlas ===
+    "lib.openJournal": "\u6253\u5f00\u65e5\u5fd7",
+    "lib.addRoute": "+ \u6dfb\u52a0\u8def\u7ebf",
+    "lib.aiSummary": "AI \u6458\u8981",
+    "lib.aiSummaryTitle": "AI \u65c5\u884c\u6458\u8981",
+    "lib.setApiKey": "\u8bf7\u5728\u8bbe\u7f6e\u4e2d\u914d\u7f6e Gemini API \u5bc6\u94a5",
+    "lib.delete": "\ud83d\uddd1 \u5220\u9664",
+    "lib.deleteConfirm": "\u786e\u8ba4\u5220\u9664",
+    "lib.analyzing": "\u5206\u6790\u4e2d...",
+    "lib.logo": "\u5f92\u6b65\u65e5\u5fd7",
+    "lib.newJournal": "+ \u65b0\u5efa\u65e5\u5fd7",
+    "lib.stats.trips": "\u6b21\u65c5\u884c",
+    "lib.stats.km": "\u516c\u91cc",
+    "lib.stats.regions": "\u4e2a\u5730\u533a",
+
+    // === Timeline ===
+    "timeline.title": "\u65e5\u5fd7\u65f6\u95f4\u7ebf",
+    "timeline.backToAtlas": "\u8fd4\u56de\u5730\u56fe\u96c6",
+    "timeline.searchPh": "\u641c\u7d22\u65e5\u5fd7...",
+    "timeline.empty": "\u8fd8\u6ca1\u6709\u65e5\u5fd7\u3002",
+    "timeline.noMatch": "\u6ca1\u6709\u5339\u914d\u7684\u65e5\u5fd7\u3002",
+    "timeline.unknown": "\u672a\u77e5",
+
+    // === Trip View ===
+    "trip.stops": "\u4e2a\u505c\u9760\u70b9",
+    "trip.elev": "m \u6d77\u62d4",
+    "trip.start": "\u8d77\u70b9",
+    "trip.finish": "\u7ec8\u70b9",
+
+    // === Notices ===
+    "notice.appendingRoutes": "\u6b63\u5728\u8ffd\u52a0\u8def\u7ebf...",
+    "notice.appendSuccess": "\u8def\u7ebf\u8ffd\u52a0\u6210\u529f\uff01",
+    "notice.generatingJournal": "\u6b63\u5728\u751f\u6210\u65e5\u5fd7...",
+    "notice.journalCreated": "\u65e5\u5fd7\u5df2\u521b\u5efa\uff1a",
+    "notice.importingPhotos": "\u6b63\u5728\u5bfc\u5165 {0} \u5f20\u7167\u7247...",
+    "notice.imported": "\u2705 \u5df2\u5bfc\u5165 {0} \u5f20\u7167\u7247\uff08{1} \u5f20\u6709 GPS\uff09",
+    "notice.noImages": "\u672a\u627e\u5230\u56fe\u7247\u6587\u4ef6",
+    "notice.unsupported": "\u4e0d\u652f\u6301\u7684\u683c\u5f0f\uff1a",
+    "notice.failedImport": "\u5bfc\u5165\u5931\u8d25 {0}\uff1a{1}",
+    "notice.cannotOpen": "\u65e0\u6cd5\u6253\u5f00\u65c5\u884c",
+    "notice.failed": "\u5931\u8d25\uff1a",
+    "notice.importedRoutes": "\u5df2\u5bfc\u5165 {0} \u4e2a\u8def\u7ebf\u6587\u4ef6",
+    "notice.generatedStops": "\u5df2\u751f\u6210 {0} \u4e2a\u505c\u9760\u70b9",
+
+    // === Quick Add Wizard (legacy) ===
+    "qa.step2.title": "\ud83d\udcf8 \u7b2c 2 \u6b65\uff1a\u5bfc\u5165\u7167\u7247",
+    "qa.step2.hint": "\u6dfb\u52a0\u60a8\u7684\u7167\u7247\u3002GPS \u5750\u6807\u5c06\u4ece EXIF \u6570\u636e\u4e2d\u81ea\u52a8\u63d0\u53d6\u3002",
+    "qa.step2.dropText": "\u5c06\u7167\u7247\u62d6\u653e\u5230\u6b64\u5904\u6216\u70b9\u51fb\u6d4f\u89c8",
+    "qa.step2.dropSub": "\u652f\u6301 JPG, PNG, HEIC",
+    "qa.step2.noPhotos": "\u8fd8\u6ca1\u6709\u5bfc\u5165\u7167\u7247\u3002",
+    "qa.step2.gps": "\ud83d\udccd GPS",
+    "qa.step2.noGps": "\u274c \u65e0 GPS",
+    "qa.step2.nextLabel": "\u4e0b\u4e00\u6b65\uff1a\u7ec4\u7ec7\u7ae0\u8282 \u2192",
+    "qa.step2.needPhotos": "\u8bf7\u5bfc\u5165\u7167\u7247\u6216 GPX \u8f68\u8ff9\u6587\u4ef6",
+    "qa.step3.title": "\ud83d\udcc2 \u7b2c 3 \u6b65\uff1a\u7ec4\u7ec7\u7ae0\u8282",
+    "qa.step3.hint": "\u521b\u5efa\u7ae0\u8282\uff08H2 = \u4e3b\u8981\u5730\u70b9\uff0cH3 = \u5b50\u7ae0\u8282\uff09\u5e76\u5c06\u7167\u7247\u5206\u914d\u5230\u6bcf\u4e2a\u7ae0\u8282\u3002",
+    "qa.step3.addH2": "+ \u6dfb\u52a0\u7ae0\u8282 (H2)",
+    "qa.step3.addH3": "+ \u6dfb\u52a0\u5b50\u7ae0\u8282 (H3)",
+    "qa.step3.autoOrg": "\ud83d\udd04 \u81ea\u52a8\u7ec4\u7ec7",
+    "qa.step3.noSections": "\u8fd8\u6ca1\u6709\u7ae0\u8282\u3002\u70b9\u51fb\u201c\u6dfb\u52a0\u7ae0\u8282\u201d\u6216\u201c\u81ea\u52a8\u7ec4\u7ec7\u201d\u3002",
+    "qa.step3.addH2First": "\u8bf7\u5148\u6dfb\u52a0\u4e3b\u7ae0\u8282 (H2)",
+    "qa.step3.nextLabel": "\u4e0b\u4e00\u6b65\uff1a\u5ba1\u67e5\u548c\u751f\u6210 \u2192",
+    "qa.step3.moveTo": "\u2192 \u79fb\u52a8\u5230...",
+    "qa.step3.untitled": "\u672a\u547d\u540d",
+    "qa.step3.majorPh": "\u4e3b\u8981\u5730\u70b9\u540d\u79f0",
+    "qa.step3.subPh": "\u5b50\u7ae0\u8282\u540d\u79f0",
+    "qa.step4.title": "\u2705 \u7b2c 4 \u6b65\uff1a\u5ba1\u67e5\u548c\u751f\u6210",
+    "qa.step4.sectionOutline": "\u7ae0\u8282\u5927\u7eb2",
+    "qa.step4.output": "\u8f93\u51fa",
+    "qa.step4.outputMd": "\ud83d\udcc4 \u5305\u542b\u6240\u6709\u7ae0\u8282\u548c\u7167\u7247\u5d4c\u5165\u7684\u5355\u4e2a Markdown \u6587\u4ef6",
+    "qa.step4.outputPhotos": "\ud83d\uddbc\ufe0f \u7167\u7247\u590d\u5236\u5230\u65c5\u884c\u6587\u4ef6\u5939\u4e2d\uff0c\u4e0e .md \u6587\u4ef6\u5e76\u5217",
+    "qa.step4.outputEdit": "\u2192 \u5728 Obsidian \u4e2d\u76f4\u63a5\u7f16\u8f91 .md \u6587\u4ef6\u4ee5\u5199\u4e0b\u60a8\u7684\u6545\u4e8b",
+    "qa.step4.noGpsWarn": "\u5f20\u7167\u7247\u6ca1\u6709 GPS \u2014 \u7a0d\u540e\u5728 markdown \u4e2d\u586b\u5199",
+    "qa.step4.generateBtn": "\ud83d\ude80 \u751f\u6210\u65e5\u5fd7",
+    "qa.step4.previewMd": "\ud83d\udc41\ufe0f \u9884\u89c8 Markdown",
+    "qa.step4.hidePreview": "\ud83d\ude48 \u9690\u85cf\u9884\u89c8",
+    "qa.step4.gpxStops": "\ud83d\udccd \u6eda\u52a8\u505c\u9760\u70b9\u5c06\u6cbf\u8def\u7ebf\u81ea\u52a8\u751f\u6210",
+  }
+};
+
+var _hjLang = "en";
+function _hjDetectLang() {
+  try {
+    var obsLang = window.localStorage.getItem("language");
+    if (obsLang && obsLang.startsWith("zh")) return "zh";
+    if (obsLang && obsLang.startsWith("en")) return "en";
+    var navLang = navigator.language || navigator.userLanguage || "en";
+    if (navLang.startsWith("zh")) return "zh";
+    return "en";
+  } catch (e) { return "en"; }
+}
+function _hjSetLang(lang) { _hjLang = (lang === "auto") ? _hjDetectLang() : lang; }
+function _hjT(key) {
+  var locale = HJ_LOCALES[_hjLang] || HJ_LOCALES.en;
+  return locale[key] || HJ_LOCALES.en[key] || key;
+}
+
 
 // src/trip-manager.ts
 var import_obsidian = require("obsidian");
@@ -11088,7 +11519,7 @@ var TripManager = class {
         this.index = JSON.parse(await this.app.vault.read(file));
       }
     } catch {
-      console.log("[HJ] No index yet (first run)");
+      // first run — no index
     }
     return this.index;
   }
@@ -11129,7 +11560,7 @@ var TripManager = class {
     this.tripFolder = folder;
     const journalMd = await this.findJournalMd(folder);
     if (journalMd) {
-      console.log("[HJ] Loading .md:", journalMd.path);
+      // loading journal markdown
       const content = await this.app.vault.read(journalMd);
       const parsed = parseJournalMarkdown(content);
       if (parsed)
@@ -11203,7 +11634,7 @@ var TripManager = class {
         const gpxTrackFull = result.trackPoints.map((p2) => ({ lat: p2.lat, lng: p2.lng, ele: p2.ele }));
         const simplified = result.trackPoints.length > 1e3 ? simplifyTrack(result.trackPoints, 1e-4) : result.trackPoints;
         const gpxTrack = simplified.map((p2) => ({ lat: p2.lat, lng: p2.lng, ele: p2.ele }));
-        console.log(`[HJ] Track loaded: ${gpxFileName} (${result.trackPoints.length} pts)`);
+        // track loaded successfully
         return { gpxTrack, gpxTrackFull, trackPoints: result.trackPoints, stats: {
           distanceKm: result.totalDistanceKm || 0,
           elevationGainM: result.elevationGainM || 0,
@@ -11671,9 +12102,9 @@ var LibraryView = class extends import_obsidian2.ItemView {
     el.addClass("hj-atlas-container");
     const root = el.createDiv({ cls: "hj-atlas-root" });
     const header = root.createDiv({ cls: "hj-atlas-header" });
-    header.createDiv({ cls: "hj-atlas-title" }).createEl("span", { text: "hiking journal", cls: "hj-atlas-logo" });
+    header.createDiv({ cls: "hj-atlas-title" }).createEl("span", { text: _hjT("lib.logo"), cls: "hj-atlas-logo" });
     const actions = header.createDiv({ cls: "hj-atlas-actions" });
-    this.mkBtn(actions, "+ New Journal", "hj-btn-primary hj-btn-sm", () => this.cb?.onInitJournal());
+    this.mkBtn(actions, _hjT("lib.newJournal"), "hj-btn-primary hj-btn-sm", () => this.cb?.onInitJournal());
     this.mkBtn(actions, "\u{1F30D}", "hj-btn-secondary hj-btn-sm", () => {
       this.map?.fitBounds([[-60, -170], [70, 170]], { padding: [20, 20], animate: true });
     });
@@ -11740,29 +12171,31 @@ var LibraryView = class extends import_obsidian2.ItemView {
       coverWrap.className = "hj-popup-cover";
       popupContent.appendChild(coverWrap);
       this.loadPopupCover(trip, coverWrap);
-      popupContent.insertAdjacentHTML("beforeend", `
-        <div class="hj-map-popup-name">${trip.name}</div>
-        <div class="hj-map-popup-meta">
-          ${trip.region ? "<span>\u{1F4CD} " + trip.region + "</span>" : ""}
-          ${trip.date ? "<span>\u{1F4C5} " + trip.date + "</span>" : ""}
-          ${trip.distanceKm ? "<span>" + trip.distanceKm.toFixed(1) + " km</span>" : ""}
-        </div>
-      `);
+      const nameDiv = document.createElement("div");
+      nameDiv.className = "hj-map-popup-name";
+      nameDiv.textContent = trip.name;
+      popupContent.appendChild(nameDiv);
+      const metaDiv = document.createElement("div");
+      metaDiv.className = "hj-map-popup-meta";
+      if (trip.region) { const s = document.createElement("span"); s.textContent = "\u{1F4CD} " + trip.region; metaDiv.appendChild(s); }
+      if (trip.date) { const s = document.createElement("span"); s.textContent = "\u{1F4C5} " + trip.date; metaDiv.appendChild(s); }
+      if (trip.distanceKm) { const s = document.createElement("span"); s.textContent = trip.distanceKm.toFixed(1) + " km"; metaDiv.appendChild(s); }
+      popupContent.appendChild(metaDiv);
       const btnRow = document.createElement("div");
       btnRow.className = "hj-popup-actions";
       popupContent.appendChild(btnRow);
       const openBtn = btnRow.createEl("button", {
-        text: "Open Journal",
+        text: _hjT("lib.openJournal"),
         cls: "hj-btn-primary hj-btn-sm"
       });
       openBtn.addEventListener("click", () => this.cb?.onOpenTrip(trip.id));
       const addRouteBtn = btnRow.createEl("button", {
-        text: "+ Add Route",
+        text: _hjT("lib.addRoute"),
         cls: "hj-btn-secondary hj-btn-sm"
       });
       addRouteBtn.addEventListener("click", () => this.cb?.onAddRoute?.(trip.id));
       const aiBtn = btnRow.createEl("button", {
-        text: "AI Summary",
+        text: _hjT("lib.aiSummary"),
         cls: "hj-btn-secondary hj-btn-sm"
       });
       // AI summary result area
@@ -11775,30 +12208,34 @@ var LibraryView = class extends import_obsidian2.ItemView {
         const model = this.cb?.settings?.geminiModel;
         if (!apiKey) {
           aiResultEl.style.display = "block";
-          aiResultEl.innerHTML = '<span style="color:var(--text-muted);font-style:italic;">Set Gemini API key in Settings</span>';
+          aiResultEl.empty();
+          aiResultEl.createEl("span", { text: _hjT("lib.setApiKey"), cls: "hj-ai-hint" });
           return;
         }
         aiBtn.disabled = true;
-        aiBtn.textContent = "Analyzing...";
+        aiBtn.textContent = _hjT("lib.analyzing");
         aiResultEl.style.display = "block";
         aiResultEl.textContent = "Loading...";
         try {
           const summary = await summarizeTripWithGemini(trip, apiKey, model);
-          aiResultEl.innerHTML = `<div class="hj-popup-ai-title">AI Trip Summary</div><div class="hj-popup-ai-text">${summary}</div>`;
+          aiResultEl.empty();
+          aiResultEl.createEl("div", { text: _hjT("lib.aiSummaryTitle"), cls: "hj-popup-ai-title" });
+          aiResultEl.createEl("div", { text: summary, cls: "hj-popup-ai-text" });
         } catch (e) {
-          aiResultEl.innerHTML = `<span style="color:#dc2626;">Error: ${e.message}</span>`;
+          aiResultEl.empty();
+          aiResultEl.createEl("span", { text: "Error: " + e.message, cls: "hj-ai-error" });
         }
-        aiBtn.textContent = "AI Summary";
+        aiBtn.textContent = _hjT("lib.aiSummary");
         aiBtn.disabled = false;
         // Update popup size
         marker2.getPopup()?.update();
       });
       const delBtn = btnRow.createEl("button", {
-        text: "\u{1F5D1} Delete",
+        text: _hjT("lib.delete"),
         cls: "hj-btn-secondary hj-btn-sm hj-btn-danger"
       });
       delBtn.addEventListener("click", async () => {
-        if (confirm(`Delete "${trip.name}"?`)) {
+        if (confirm(_hjT("lib.deleteConfirm") + ` "${trip.name}"?`)) {
           await this.cb?.onDeleteTrip(trip.id);
           this.render();
         }
@@ -11955,11 +12392,11 @@ var LibraryView = class extends import_obsidian2.ItemView {
     const trips = this.cb.manager.getIndex().trips;
     const km = trips.reduce((s2, t2) => s2 + (t2.distanceKm || 0), 0);
     const regions = new Set(trips.map((t2) => t2.region).filter(Boolean));
-    this.statsEl.innerHTML = "";
+    this.statsEl.empty();
     for (const [v2, l2] of [
-      [String(trips.length), "trips"],
-      [km > 0 ? km.toFixed(0) : "0", "km"],
-      [String(regions.size), "regions"]
+      [String(trips.length), _hjT("lib.stats.trips")],
+      [km > 0 ? km.toFixed(0) : "0", _hjT("lib.stats.km")],
+      [String(regions.size), _hjT("lib.stats.regions")]
     ]) {
       const d2 = this.statsEl.createDiv({ cls: "hj-atlas-stat" });
       d2.createEl("span", { text: v2, cls: "hj-atlas-stat-val" });
@@ -11982,7 +12419,7 @@ var TimelineView = class extends import_obsidian2.ItemView {
     return TIMELINE_VIEW_TYPE;
   }
   getDisplayText() {
-    return "Journal Timeline";
+    return _hjT("timeline.title");
   }
   getIcon() {
     return "clock";
@@ -12002,13 +12439,13 @@ var TimelineView = class extends import_obsidian2.ItemView {
     el.addClass("hj-timeline-container");
     const header = el.createDiv({ cls: "hj-timeline-header" });
     const titleRow = header.createDiv({ cls: "hj-timeline-title-row" });
-    titleRow.createEl("h3", { text: "Journal Timeline" });
-    const homeBtn = titleRow.createEl("button", { text: "\u{1F30D}", cls: "hj-timeline-home-btn", attr: { title: "Back to Atlas" } });
+    titleRow.createEl("h3", { text: _hjT("timeline.title") });
+    const homeBtn = titleRow.createEl("button", { text: "\u{1F30D}", cls: "hj-timeline-home-btn", attr: { title: _hjT("timeline.backToAtlas") } });
     homeBtn.addEventListener("click", () => this.cb?.onGoHome?.());
     // Search box
     const searchInput = header.createEl("input", {
       cls: "hj-timeline-search",
-      attr: { type: "text", placeholder: "Search journals..." }
+      attr: { type: "text", placeholder: _hjT("timeline.searchPh") }
     });
     const trips = [...this.cb.manager.getIndex().trips];
     // Sort by date descending (newest first)
@@ -12018,7 +12455,7 @@ var TimelineView = class extends import_obsidian2.ItemView {
       return db.localeCompare(da);
     });
     if (trips.length === 0) {
-      el.createDiv({ cls: "hj-timeline-empty", text: "No journals yet." });
+      el.createDiv({ cls: "hj-timeline-empty", text: _hjT("timeline.empty") });
       return;
     }
     const list = el.createDiv({ cls: "hj-timeline-list" });
@@ -12031,12 +12468,12 @@ var TimelineView = class extends import_obsidian2.ItemView {
         (t.date || "").includes(q)
       ) : trips;
       if (filtered.length === 0) {
-        list.createDiv({ cls: "hj-timeline-empty", text: "No matching journals." });
+        list.createDiv({ cls: "hj-timeline-empty", text: _hjT("timeline.noMatch") });
         return;
       }
       let currentYear = "";
       for (const trip of filtered) {
-        const year = trip.date ? trip.date.substring(0, 4) : "Unknown";
+        const year = trip.date ? trip.date.substring(0, 4) : _hjT("timeline.unknown");
         if (year !== currentYear) {
           currentYear = year;
           list.createDiv({ cls: "hj-timeline-year", text: year });
@@ -12416,7 +12853,7 @@ var TripView = class extends import_obsidian3.ItemView {
     try {
       const reloaded = await this.mgr.loadTrip(tripId);
       if (reloaded) {
-        console.log("[HJ] Live reload: markdown changed, rebuilding view");
+        // live reload: markdown changed
         await this.rebuild();
       }
     } catch (err) {
@@ -12905,9 +13342,9 @@ var TripView = class extends import_obsidian3.ItemView {
     if (this.hasTrack && this.route.length >= 2) {
       const startPt = this.route[0];
       const endPt = this.route[this.route.length - 1];
-      S("text", { x: `${startPt.x - 25}`, y: `${startPt.y - 18}`, "font-size": "10", fill: "#dc2626", "font-weight": "bold", "letter-spacing": "1", class: "hj-noptr" }, g2).textContent = "START";
+      S("text", { x: `${startPt.x - 25}`, y: `${startPt.y - 18}`, "font-size": "10", fill: "#dc2626", "font-weight": "bold", "letter-spacing": "1", class: "hj-noptr" }, g2).textContent = _hjT("trip.start");
       S("circle", { cx: `${startPt.x}`, cy: `${startPt.y}`, r: "4", fill: "#dc2626" }, g2);
-      S("text", { x: `${endPt.x - 28}`, y: `${endPt.y - 18}`, "font-size": "10", fill: "#dc2626", "font-weight": "bold", "letter-spacing": "1", class: "hj-noptr" }, g2).textContent = "FINISH";
+      S("text", { x: `${endPt.x - 28}`, y: `${endPt.y - 18}`, "font-size": "10", fill: "#dc2626", "font-weight": "bold", "letter-spacing": "1", class: "hj-noptr" }, g2).textContent = _hjT("trip.finish");
       S("circle", { cx: `${endPt.x}`, cy: `${endPt.y}`, r: "4", fill: "#dc2626" }, g2);
     }
     // Render waypoint dots
@@ -12945,7 +13382,7 @@ var TripView = class extends import_obsidian3.ItemView {
         s2.createEl("span", { text: `\u2B06\uFE0F ${trip.stats.elevationGainM}m` });
       if (trip.stats.elevationLossM)
         s2.createEl("span", { text: `\u2B07\uFE0F ${trip.stats.elevationLossM}m` });
-      s2.createEl("span", { text: `\u{1F4F8} ${trip.waypoints.length} stops` });
+      s2.createEl("span", { text: `\u{1F4F8} ${trip.waypoints.length} ${_hjT("trip.stops")}` });
     }
     if (trip.description)
       h2.createEl("p", { text: trip.description, cls: "hj-header-desc" });
@@ -13369,36 +13806,35 @@ var TripView = class extends import_obsidian3.ItemView {
     const wrap3 = this.svgBox.parentElement;
     wrap3.style.position = "relative";
     const overlay = document.createElement("div");
-    overlay.style.cssText = "position:absolute;z-index:200;pointer-events:auto;min-width:230px;max-width:290px;";
+    overlay.className = "hj-bubble-overlay";
     const inner = document.createElement("div");
     inner.className = "hj-bubble-inner";
-    inner.style.cssText = "position:relative;padding:12px 14px 14px;";
+    
     // Close button
     const closeBtn = document.createElement("button");
     closeBtn.textContent = "\u00d7";
-    closeBtn.style.cssText = "position:absolute;top:6px;right:8px;background:none;border:none;font-size:18px;line-height:1;cursor:pointer;color:#9ca3af;padding:0;";
+    closeBtn.className = "hj-bubble-close";
     closeBtn.addEventListener("click", (e3) => { e3.stopPropagation(); this.rmBubble(); });
     inner.appendChild(closeBtn);
     // Title
     const titleEl = document.createElement("div");
     titleEl.className = "hj-bubble-title";
-    titleEl.style.paddingRight = "20px";
+    
     titleEl.textContent = p2.title || "Location";
     inner.appendChild(titleEl);
     // Coordinates
     if (p2.lat && p2.lng) {
       const coords = document.createElement("div");
-      coords.style.cssText = "font-size:10px;color:#94a3b8;font-family:monospace;margin-bottom:7px;";
+      coords.className = "hj-bubble-coords";
       coords.textContent = `${p2.lat.toFixed(5)}, ${p2.lng.toFixed(5)}`;
       inner.appendChild(coords);
     }
     // Body (AI content)
     const body = document.createElement("div");
-    body.style.cssText = "font-size:12px;line-height:1.6;color:#334155;";
+    body.className = "hj-bubble-body";
     const apiKey = this.settings && this.settings.geminiApiKey;
     if (!apiKey) {
-      body.style.color = "#94a3b8";
-      body.style.fontStyle = "italic";
+      body.classList.add("hj-bubble-body-muted");
       body.textContent = p2.description || "Set Gemini API key in Settings for AI insights.";
     } else {
       body.textContent = "Asking AI\u2026";
@@ -13432,16 +13868,16 @@ var TripView = class extends import_obsidian3.ItemView {
         const model = (this.settings && this.settings.geminiModel) || "gemini-2.0-flash";
         const info = await enrichLocationWithGemini(p2.lat, p2.lng, p2.title || "", apiKey, model);
         if (this.bubble === overlay && info) {
-          let html = "";
-          if (info.category) html += `<b style="color:#0f172a;">${info.category}</b><br>`;
-          if (info.description) html += `<span>${info.description}</span>`;
-          if (info.highlights && info.highlights.length) html += `<br><span style="color:#64748b;font-size:10px;">• ${info.highlights.slice(0, 2).join(" \u2022 ")}</span>`;
-          body.innerHTML = html || (p2.description || "No information available.");
+          body.empty();
+          if (info.category) { body.createEl("b", { text: info.category, cls: "hj-ai-category" }); body.createEl("br"); }
+          if (info.description) body.createEl("span", { text: info.description });
+          if (info.highlights && info.highlights.length) { body.createEl("br"); body.createEl("span", { text: "\u2022 " + info.highlights.slice(0, 2).join(" \u2022 "), cls: "hj-ai-highlights" }); }
+          if (!body.hasChildNodes()) body.textContent = p2.description || "No information available.";
         }
       } catch (e3) {
         console.error("[HJ] enrichLocationWithGemini failed:", e3);
         if (this.bubble === overlay) {
-          body.style.color = "#ef4444";
+          body.classList.add("hj-ai-error");
           body.textContent = e3 && e3.message ? e3.message : "AI error. Check console for details.";
         }
       }
@@ -15414,24 +15850,24 @@ var JournalWizard = class extends import_obsidian4.Modal {
   // ==============================
   renderStep1() {
     const el = this.contentEl;
-    el.createEl("h2", { text: this.existingTripId ? "Step 1: Upload Route(s)" : "Step 1: Trip Info" });
-    el.createEl("p", { text: this.existingTripId ? "Upload GPX route file(s) to add to the existing journal." : "Basic information and route files for your hiking trip.", cls: "hj-wizard-hint" });
+    el.createEl("h2", { text: this.existingTripId ? _hjT("step1.titleEdit") : _hjT("step1.titleNew") });
+    el.createEl("p", { text: this.existingTripId ? _hjT("step1.hintEdit") : _hjT("step1.hintNew"), cls: "hj-wizard-hint" });
     if (!this.existingTripId) {
     const nameDiv = el.createDiv({ cls: "hj-wizard-field" });
-    nameDiv.createEl("label", { text: "Trip Name *" });
+    nameDiv.createEl("label", { text: _hjT("step1.tripName") });
     const nameInput = nameDiv.createEl("input", {
       type: "text",
-      placeholder: "e.g. Kumano Kodo Pilgrimage",
+      placeholder: _hjT("step1.tripNamePh"),
       cls: "hj-wizard-input",
       value: this.config.name
     });
     nameInput.addEventListener("input", () => this.config.name = nameInput.value);
     const dateRow = el.createDiv({ cls: "hj-wizard-field" });
     const dateCols = dateRow.createDiv();
-    dateCols.style.cssText = "display:flex;gap:12px;";
+    dateCols.className = "hj-date-cols";
     const startCol = dateCols.createDiv({ cls: "hj-wizard-field" });
-    startCol.style.flex = "1";
-    startCol.createEl("label", { text: "Start Date" });
+    startCol.className = "hj-date-col";
+    startCol.createEl("label", { text: _hjT("step1.startDate") });
     const dateInput = startCol.createEl("input", {
       type: "date",
       cls: "hj-wizard-input",
@@ -15439,8 +15875,8 @@ var JournalWizard = class extends import_obsidian4.Modal {
     });
     dateInput.addEventListener("input", () => this.config.date = dateInput.value);
     const endCol = dateCols.createDiv({ cls: "hj-wizard-field" });
-    endCol.style.flex = "1";
-    endCol.createEl("label", { text: "End Date" });
+    endCol.className = "hj-date-col";
+    endCol.createEl("label", { text: _hjT("step1.endDate") });
     const endDateInput = endCol.createEl("input", {
       type: "date",
       cls: "hj-wizard-input",
@@ -15448,18 +15884,18 @@ var JournalWizard = class extends import_obsidian4.Modal {
     });
     endDateInput.addEventListener("input", () => this.config.endDate = endDateInput.value);
     const regionDiv = el.createDiv({ cls: "hj-wizard-field" });
-    regionDiv.createEl("label", { text: "Region" });
+    regionDiv.createEl("label", { text: _hjT("step1.region") });
     const regionInput = regionDiv.createEl("input", {
       type: "text",
-      placeholder: "e.g. Kii Peninsula, Japan",
+      placeholder: _hjT("step1.regionPh"),
       cls: "hj-wizard-input",
       value: this.config.region
     });
     regionInput.addEventListener("input", () => this.config.region = regionInput.value);
     const descDiv = el.createDiv({ cls: "hj-wizard-field" });
-    descDiv.createEl("label", { text: "Description (optional)" });
+    descDiv.createEl("label", { text: _hjT("step1.description") });
     const descInput = descDiv.createEl("textarea", {
-      placeholder: "Brief description of your trip...",
+      placeholder: _hjT("step1.descPh"),
       cls: "hj-wizard-textarea"
     });
     descInput.value = this.config.description;
@@ -15467,7 +15903,7 @@ var JournalWizard = class extends import_obsidian4.Modal {
     descInput.addEventListener("input", () => this.config.description = descInput.value);
     // === Map Style Selector ===
     const mapStyleDiv = el.createDiv({ cls: "hj-wizard-field" });
-    mapStyleDiv.createEl("label", { text: "Map Style" });
+    mapStyleDiv.createEl("label", { text: _hjT("step1.mapStyle") });
     const mapStyleRow = mapStyleDiv.createDiv({ cls: "hj-map-style-row" });
     const mapStyleSelect = mapStyleRow.createEl("select", { cls: "hj-wizard-input hj-map-style-select" });
     for (const [key, style] of Object.entries(MAP_STYLES)) {
@@ -15495,10 +15931,10 @@ var JournalWizard = class extends import_obsidian4.Modal {
     } // end !existingTripId config block
     // === Multi-GPX Route Upload ===
     const gpxDiv = el.createDiv({ cls: "hj-wizard-field" });
-    gpxDiv.createEl("label", { text: "Route Files (optional, supports multiple)" });
+    gpxDiv.createEl("label", { text: _hjT("step1.routeFiles") });
     const gpxDrop = gpxDiv.createDiv({ cls: "hj-drop-zone hj-drop-sm" });
     gpxDrop.createEl("div", { text: "\u{1F4C2}", cls: "hj-drop-icon" });
-    gpxDrop.createEl("div", { text: "Drop .gpx / .kml / .kmz / .fit / .plt files (multiple supported)" });
+    gpxDrop.createEl("div", { text: _hjT("step1.dropGpx") });
     const trackListEl = gpxDiv.createDiv({ cls: "hj-track-list" });
     const renderTrackList = () => {
       trackListEl.empty();
@@ -15509,7 +15945,7 @@ var JournalWizard = class extends import_obsidian4.Modal {
           type: "text",
           cls: "hj-track-name-input",
           value: track.name,
-          placeholder: "Route name (e.g. Day 1)"
+          placeholder: _hjT("step1.routeNamePh")
         });
         nameIn.addEventListener("input", () => { track.name = nameIn.value; });
         item.createEl("span", {
@@ -15539,7 +15975,7 @@ var JournalWizard = class extends import_obsidian4.Modal {
         try {
           const fmt = detectFormat(file.name);
           if (!fmt) {
-            new import_obsidian4.Notice(`Unsupported format: ${file.name}`);
+            new import_obsidian4.Notice(_hjT("notice.unsupported") + file.name);
             continue;
           }
           const result = await parseTrackFile(file);
@@ -15569,7 +16005,7 @@ var JournalWizard = class extends import_obsidian4.Modal {
       }
       renderTrackList();
       if (this.tracks.length > 0) {
-        new import_obsidian4.Notice(`Imported ${this.tracks.length} route file(s)`);
+        new import_obsidian4.Notice(_hjT("notice.importedRoutes").replace("{0}", this.tracks.length));
       }
     };
     gpxDrop.addEventListener("drop", async (e2) => {
@@ -15585,14 +16021,14 @@ var JournalWizard = class extends import_obsidian4.Modal {
       }
     });
     this.renderFooter(el, {
-      nextLabel: "Next: Select Locations \u2192",
+      nextLabel: _hjT("step1.nextLabel"),
       onNext: () => {
         if (!this.existingTripId && !this.config.name.trim()) {
-          new import_obsidian4.Notice("Please enter a trip name");
+          new import_obsidian4.Notice(_hjT("step1.enterName"));
           return;
         }
         if (this.existingTripId && this.tracks.length === 0) {
-          new import_obsidian4.Notice("Please upload at least one route file");
+          new import_obsidian4.Notice(_hjT("step1.uploadRoute"));
           return;
         }
         this.step = 2;
@@ -15605,20 +16041,20 @@ var JournalWizard = class extends import_obsidian4.Modal {
   // ==============================
   renderStep2Locations() {
     const el = this.contentEl;
-    el.createEl("h2", { text: "Step 2: Select Locations" });
+    el.createEl("h2", { text: _hjT("step2.title") });
     const geminiKey = this.settings?.geminiApiKey || "";
 
     // === Mode selector ===
     const modeRow = el.createDiv({ cls: "hj-mode-row" });
-    modeRow.style.cssText = "display:flex;gap:8px;align-items:center;margin-bottom:12px;padding:10px;background:var(--background-secondary);border-radius:8px;flex-wrap:wrap;";
-    modeRow.createEl("span", { text: "Location mode:", cls: "hj-mode-label" });
-    const manualBtn = modeRow.createEl("button", { text: "✋ Manual", cls: this.useAiLocation ? "hj-btn-secondary hj-btn-sm" : "hj-btn-primary hj-btn-sm" });
-    const aiBtn = modeRow.createEl("button", { text: "AI-Assisted (Gemini)", cls: this.useAiLocation ? "hj-btn-primary hj-btn-sm" : "hj-btn-secondary hj-btn-sm" });
+    modeRow.className = "hj-mode-row";
+    modeRow.createEl("span", { text: _hjT("step2.modeLabel"), cls: "hj-mode-label" });
+    const manualBtn = modeRow.createEl("button", { text: _hjT("step2.manual"), cls: this.useAiLocation ? "hj-btn-secondary hj-btn-sm" : "hj-btn-primary hj-btn-sm" });
+    const aiBtn = modeRow.createEl("button", { text: _hjT("step2.aiAssisted"), cls: this.useAiLocation ? "hj-btn-primary hj-btn-sm" : "hj-btn-secondary hj-btn-sm" });
     if (!geminiKey) {
       aiBtn.disabled = true;
-      aiBtn.title = "Set Gemini API key in Settings first";
-      const warn = modeRow.createEl("span", { text: "Set Gemini API key in plugin Settings to enable", cls: "hj-warn-text" });
-      warn.style.cssText = "color:var(--text-warning);font-size:12px;";
+      aiBtn.title = _hjT("step2.aiDisabled");
+      const warn = modeRow.createEl("span", { text: _hjT("step2.aiWarn"), cls: "hj-warn-text" });
+      warn.className = "hj-mode-warn";
     }
 
     const mainArea = el.createDiv({ cls: "hj-step2-main" });
@@ -15649,12 +16085,12 @@ var JournalWizard = class extends import_obsidian4.Modal {
     renderMainArea();
 
     this.renderFooter(el, {
-      backLabel: "\u2190 Back",
+      backLabel: _hjT("step2.backLabel"),
       onBack: () => { this.step = 1; this.renderStep(); },
-      nextLabel: "Next: Upload Photos \u2192",
+      nextLabel: _hjT("step2.nextLabel"),
       onNext: () => {
         if (this.locations.length === 0 && this.tracks.length === 0) {
-          new import_obsidian4.Notice("Please add at least one location or route");
+          new import_obsidian4.Notice(_hjT("step2.noLocation"));
           return;
         }
         if (this.locations.length === 0 && this.tracks.length > 0) {
@@ -15682,20 +16118,16 @@ var JournalWizard = class extends import_obsidian4.Modal {
   // Manual mode sub-renderer
   renderStep2ManualMode(el) {
     el.createEl("p", {
-      text: "Click on the route to add locations with precise GPX coordinates, or use the buttons below.",
+      text: _hjT("step2.manualHint"),
       cls: "hj-wizard-hint"
     });
     const locToolbar = el.createDiv({ cls: "hj-section-toolbar" });
-    const addLocBtn = locToolbar.createEl("button", { text: "+ Add Location", cls: "hj-btn-primary hj-btn-sm" });
-    const autoLocBtn = locToolbar.createEl("button", { text: "Auto-generate stops", cls: "hj-btn-secondary hj-btn-sm" });
+    const addLocBtn = locToolbar.createEl("button", { text: _hjT("step2.addLocation"), cls: "hj-btn-primary hj-btn-sm" });
+    const autoLocBtn = locToolbar.createEl("button", { text: _hjT("step2.autoGenerate"), cls: "hj-btn-secondary hj-btn-sm" });
     // Map container for route visualization
     if (this.tracks.length > 0) {
       const mapWrap = el.createDiv({ cls: "hj-wizard-map-wrap" });
-      mapWrap.style.height = "400px";
-      mapWrap.style.marginBottom = "12px";
-      mapWrap.style.borderRadius = "8px";
-      mapWrap.style.overflow = "hidden";
-      mapWrap.style.border = "1px solid var(--background-modifier-border)";
+      mapWrap.className = "hj-manual-map-wrap";
       setTimeout(() => {
         if (!mapWrap.isConnected) return;
         const wizMap = L2.map(mapWrap, { zoomControl: true, attributionControl: false });
@@ -15773,7 +16205,7 @@ var JournalWizard = class extends import_obsidian4.Modal {
     const renderLocList = () => {
       locListEl.empty();
       if (this.locations.length === 0) {
-        locListEl.createDiv({ text: "No locations yet. Click on the route to add stops, or use the buttons above.", cls: "hj-empty-hint" });
+        locListEl.createDiv({ text: _hjT("step2.emptyHint"), cls: "hj-empty-hint" });
         return;
       }
       for (const loc of this.locations) {
@@ -15798,20 +16230,20 @@ var JournalWizard = class extends import_obsidian4.Modal {
         });
         const geminiKeyManual = this.settings && this.settings.geminiApiKey || "";
         if (geminiKeyManual) {
-          const enrichBtnM = item.createEl("button", { text: "AI Info", cls: "hj-btn-secondary hj-btn-sm" });
-          enrichBtnM.title = "Get historical and travel information from AI for this location";
+          const enrichBtnM = item.createEl("button", { text: _hjT("step2.aiInfo"), cls: "hj-btn-secondary hj-btn-sm" });
+          enrichBtnM.title = _hjT("step2.aiInfoTitle");
           enrichBtnM.addEventListener("click", async () => {
-            enrichBtnM.disabled = true; enrichBtnM.setText("Loading...");
+            enrichBtnM.disabled = true; enrichBtnM.setText(_hjT("step2.loading"));
             const info = await enrichLocationWithGemini(loc.lat, loc.lng, loc.title, geminiKeyManual, this.settings && this.settings.geminiModel);
-            enrichBtnM.disabled = false; enrichBtnM.setText("AI Info");
+            enrichBtnM.disabled = false; enrichBtnM.setText(_hjT("step2.aiInfo"));
             if (info.description) {
               loc.description = info.description;
               if (info.highlights && info.highlights.length) {
                 loc.description += "\n\nHighlights:\n" + info.highlights.map(function(h) { return "- " + h; }).join("\n");
               }
-              new import_obsidian4.Notice("AI info added for: " + loc.title);
+              new import_obsidian4.Notice(_hjT("step2.aiInfoAdded") + loc.title);
             } else {
-              new import_obsidian4.Notice("Could not get AI info for this location");
+              new import_obsidian4.Notice(_hjT("step2.aiInfoFailed"));
             }
           });
         }
@@ -15879,22 +16311,22 @@ var JournalWizard = class extends import_obsidian4.Modal {
       }
       renderLocList();
       if (this._refreshMapMarkers) this._refreshMapMarkers();
-      new import_obsidian4.Notice(`Generated ${this.locations.length} location stops`);
+      new import_obsidian4.Notice(_hjT("notice.generatedStops").replace("{0}", this.locations.length));
     });
   }
   // AI-Assisted location mode
   renderStep2AiMode(el, geminiKey) {
     el.createEl("p", {
-      text: "Upload all your photos. Gemini will analyze each photo to suggest geographic locations. Review and adjust the results before continuing.",
+      text: _hjT("step2.aiHint"),
       cls: "hj-wizard-hint"
     });
     const uploadSection = el.createDiv({ cls: "hj-ai-upload-section" });
-    uploadSection.style.cssText = "border:2px dashed var(--background-modifier-border);border-radius:8px;padding:16px;margin-bottom:12px;";
-    uploadSection.createEl("h4", { text: "Upload Photos for AI Analysis" });
+    uploadSection.className = "hj-ai-upload-section";
+    uploadSection.createEl("h4", { text: _hjT("step2.uploadTitle") });
     const dropZone2 = uploadSection.createDiv({ cls: "hj-drop-zone" });
     dropZone2.createEl("div", { text: "", cls: "hj-drop-icon" });
-    dropZone2.createEl("div", { text: "Drop all your trip photos here or click to browse" });
-    dropZone2.createEl("div", { text: "AI will analyze each photo to identify its location", cls: "hj-drop-sub" });
+    dropZone2.createEl("div", { text: _hjT("step2.dropPhotos") });
+    dropZone2.createEl("div", { text: _hjT("step2.dropPhotosSub"), cls: "hj-drop-sub" });
     const fileInput3 = uploadSection.createEl("input", { type: "file" });
     fileInput3.accept = "image/*";
     fileInput3.multiple = true;
@@ -15903,7 +16335,7 @@ var JournalWizard = class extends import_obsidian4.Modal {
     dropZone2.addEventListener("dragover", (e) => { e.preventDefault(); dropZone2.addClass("hj-drop-active"); });
     dropZone2.addEventListener("dragleave", () => dropZone2.removeClass("hj-drop-active"));
     const photoCountEl = uploadSection.createEl("div", { cls: "hj-ai-photo-count" });
-    photoCountEl.style.cssText = "margin-top:8px;font-size:13px;color:var(--text-muted);";
+    photoCountEl.className = "hj-ai-photo-count";
     const updatePhotoCount = () => {
         const total2 = this.photos.size;
         const withGps = Array.from(this.photos.values()).filter((p) => p.exif && p.exif.hasGps).length;
@@ -15921,19 +16353,19 @@ var JournalWizard = class extends import_obsidian4.Modal {
       if (fileInput3.files?.length) await handleFiles2(Array.from(fileInput3.files));
     });
     const analyzeRow = el.createDiv({ cls: "hj-analyze-row" });
-    analyzeRow.style.cssText = "display:flex;gap:8px;align-items:center;margin-bottom:16px;flex-wrap:wrap;";
-    const analyzeBtn = analyzeRow.createEl("button", { text: "Analyze with Gemini", cls: "hj-btn-primary" });
+    analyzeRow.className = "hj-analyze-row";
+    const analyzeBtn = analyzeRow.createEl("button", { text: _hjT("step2.analyzeBtn"), cls: "hj-btn-primary" });
     // Cluster radius input
     const clusterLabel = analyzeRow.createEl("label");
-    clusterLabel.style.cssText = "font-size:12px;color:var(--text-muted);display:flex;align-items:center;gap:4px;white-space:nowrap;";
-    clusterLabel.createEl("span", { text: "Cluster radius:" });
+    clusterLabel.className = "hj-cluster-label";
+    clusterLabel.createEl("span", { text: _hjT("step2.clusterRadius") });
     const clusterInput = clusterLabel.createEl("input", { type: "number" });
     clusterInput.value = "100";
     clusterInput.min = "0"; clusterInput.max = "5000"; clusterInput.step = "50";
-    clusterInput.style.cssText = "width:60px;padding:2px 4px;border-radius:4px;border:1px solid var(--background-modifier-border);font-size:12px;";
-    clusterLabel.createEl("span", { text: "m" });
+    clusterInput.className = "hj-cluster-input";
+    clusterLabel.createEl("span", { text: _hjT("step2.clusterUnit") });
     const analyzeStatus = analyzeRow.createEl("span", { cls: "hj-analyze-status" });
-    analyzeStatus.style.cssText = "font-size:13px;color:var(--text-muted);";
+    analyzeStatus.className = "hj-analyze-status";
     const reviewSection = el.createDiv({ cls: "hj-ai-review-section" });
     const selectedIds = new Set(); // persists across renderReview calls
     let savedMapView = null; // preserve map center+zoom across re-renders
@@ -15946,22 +16378,21 @@ var JournalWizard = class extends import_obsidian4.Modal {
       reviewSection.createEl("h4", { text: `${this.locations.length} Location${this.locations.length !== 1 ? "s" : ""} Detected — Review & Edit` });
       // Controls bar: Cluster Nearby + Merge Selected
       const clusterBar = reviewSection.createDiv();
-      clusterBar.style.cssText = "display:flex;gap:6px;align-items:center;margin-bottom:10px;flex-wrap:wrap;";
-      const clusterBtn = clusterBar.createEl("button", { text: "⊤ Cluster Nearby", cls: "hj-btn-secondary hj-btn-sm" });
+      clusterBar.className = "hj-cluster-bar";
+      const clusterBtn = clusterBar.createEl("button", { text: _hjT("step2.clusterBtn"), cls: "hj-btn-secondary hj-btn-sm" });
       clusterBtn.title = "Merge location points that are within the radius into one";
       const clusterRadiusInput = clusterBar.createEl("input", { type: "number" });
       clusterRadiusInput.value = "100"; clusterRadiusInput.min = "0"; clusterRadiusInput.max = "5000"; clusterRadiusInput.step = "25";
-      clusterRadiusInput.style.cssText = "width:58px;padding:2px 5px;border-radius:4px;border:1px solid var(--background-modifier-border);font-size:12px;";
-      clusterBar.createEl("span", { text: "m" }).style.cssText = "font-size:12px;color:var(--text-muted);";
-      const clusterInfo = clusterBar.createEl("span");
-      clusterInfo.style.cssText = "font-size:12px;color:var(--text-muted);margin-left:4px;";
+      clusterRadiusInput.className = "hj-cluster-input";
+      clusterBar.createEl("span", { text: _hjT("step2.clusterUnit"), cls: "hj-cluster-unit" });
+      const clusterInfo = clusterBar.createEl("span", { cls: "hj-cluster-info" });
       // Merge Selected button
-      clusterBar.createEl("span", { text: "|" }).style.cssText = "color:var(--background-modifier-border);font-size:14px;";
-      const mergeSelBtn = clusterBar.createEl("button", { text: "Merge Selected (0)", cls: "hj-btn-primary hj-btn-sm" });
+      clusterBar.createEl("span", { text: "|", cls: "hj-cluster-sep" });
+      const mergeSelBtn = clusterBar.createEl("button", { text: _hjT("step2.mergeSel") + " (0)", cls: "hj-btn-primary hj-btn-sm" });
       mergeSelBtn.disabled = true;
       const updateMergeSelBtn = () => {
         const n = selectedIds.size;
-        mergeSelBtn.textContent = `Merge Selected (${n})`;
+        mergeSelBtn.textContent = _hjT("step2.mergeSel") + ` (${n})`;
         mergeSelBtn.disabled = n < 2;
       };
       updateMergeSelBtn();
@@ -15985,19 +16416,19 @@ var JournalWizard = class extends import_obsidian4.Modal {
           clusterInfo.textContent = `✔ Merged ${merged} point${merged !== 1 ? "s" : ""} → ${this.locations.length} location${this.locations.length !== 1 ? "s" : ""}.`;
           clusterInfo.style.color = "#10b981";
         } else {
-          clusterInfo.textContent = "No points close enough to cluster.";
+          clusterInfo.textContent = _hjT("step2.noCluster");
           clusterInfo.style.color = "var(--text-muted)";
         }
         renderReview();
       });
       const splitEl = reviewSection.createDiv();
-      splitEl.style.cssText = "display:flex;gap:12px;align-items:flex-start;";
+      splitEl.className = "hj-ai-split";
       // -- Map column --
       const mapCol = splitEl.createDiv();
-      mapCol.style.cssText = "flex:1;min-width:0;";
+      mapCol.className = "hj-ai-map-col";
       const markerRefs = {};
       const mapWrap2 = mapCol.createDiv({ cls: "hj-wizard-map-wrap" });
-      mapWrap2.style.cssText = "height:380px;border-radius:8px;overflow:hidden;border:1px solid var(--background-modifier-border);";
+      mapWrap2.className = "hj-ai-map-wrap";
       setTimeout(() => {
         if (!mapWrap2.isConnected) return;
         const wizMap2 = L2.map(mapWrap2, { zoomControl: true, attributionControl: false });
@@ -16055,31 +16486,33 @@ var JournalWizard = class extends import_obsidian4.Modal {
           marker.on("mouseover", () => {
             const refs = inputRefs[locM.id];
             if (refs && refs.item) {
-              refs.item.style.outline = "2px solid #3b82f6";
-              refs.item.style.boxShadow = "0 0 0 3px rgba(59,130,246,0.2)";
+              refs.item.classList.add("hj-ai-loc-highlight");
               refs.item.scrollIntoView({ behavior: "smooth", block: "nearest" });
             }
             if (locM.photos.length > 0) {
-              let html2 = `<div style="font-weight:600;margin-bottom:5px;font-size:12px;">${locM.title}</div><div style="display:flex;gap:3px;flex-wrap:wrap;">`;
+              const popupEl = document.createElement("div");
+              popupEl.className = "hj-hover-popup";
+              popupEl.createEl("div", { text: locM.title, cls: "hj-hover-popup-title" });
+              const thumbWrap = popupEl.createDiv({ cls: "hj-hover-popup-thumbs" });
               const blobUrls = [];
               for (const pRef of locM.photos.slice(0, 4)) {
                 const buf2 = this.photoBuffers.get(pRef.id);
                 if (buf2) {
                   const u = URL.createObjectURL(new Blob([buf2]));
                   blobUrls.push(u);
-                  html2 += `<img src="${u}" style="width:54px;height:54px;object-fit:cover;border-radius:4px;">`;
+                  const img = thumbWrap.createEl("img", { cls: "hj-hover-popup-img" });
+                  img.src = u;
                 }
               }
-              html2 += `</div>`;
               if (blobUrls.length) {
                 marker._hjBlobUrls = blobUrls;
-                marker.bindPopup(html2, { autoPan: false, closeButton: false, className: "hj-photo-popup" }).openPopup();
+                marker.bindPopup(popupEl, { autoPan: false, closeButton: false, className: "hj-photo-popup" }).openPopup();
               }
             }
           });
           marker.on("mouseout", () => {
             const refs = inputRefs[locM.id];
-            if (refs && refs.item) { refs.item.style.outline = ""; refs.item.style.boxShadow = ""; }
+            if (refs && refs.item) { refs.item.classList.remove("hj-ai-loc-highlight"); }
             if (marker._hjBlobUrls) { marker._hjBlobUrls.forEach((u) => URL.revokeObjectURL(u)); marker._hjBlobUrls = []; }
             marker.closePopup();
           });
@@ -16112,53 +16545,53 @@ var JournalWizard = class extends import_obsidian4.Modal {
       }, 100);
       // -- List column --
       const listCol = splitEl.createDiv();
-      listCol.style.cssText = "flex:1;min-width:0;max-height:380px;overflow-y:auto;";
+      listCol.className = "hj-ai-list-col";
       const inputRefs = {};
       for (const loc of this.locations) {
         const item = listCol.createDiv({ cls: "hj-location-item" });
-        item.style.cssText = "display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:8px;margin-bottom:6px;background:var(--background-secondary);border-radius:6px;";
+        item.className = "hj-ai-loc-item";
         const src = loc.gpsSource || "";
         const badgeColor = src === "exif" ? "#2563eb" : src.includes("high") ? "#10b981" : src.includes("medium") ? "#f59e0b" : src.includes("unknown") ? "#6b7280" : "#3b82f6";
         // Selection checkbox
         const selCb = item.createEl("input", { type: "checkbox" });
-        selCb.style.cssText = "flex-shrink:0;width:15px;height:15px;cursor:pointer;accent-color:#3b82f6;";
+        selCb.className = "hj-ai-loc-cb";
         selCb.checked = selectedIds.has(loc.id);
-        if (selCb.checked) item.style.outline = "2px solid #3b82f6";
+        if (selCb.checked) item.classList.add("hj-ai-loc-highlight");
         selCb.addEventListener("change", () => {
           if (selCb.checked) {
             selectedIds.add(loc.id);
-            item.style.outline = "2px solid #3b82f6";
+            item.classList.add("hj-ai-loc-highlight");
             const mkr2 = markerRefs[loc.id];
             if (mkr2) mkr2.setIcon(L2.divIcon({ className: "", html: `<div style="background:${badgeColor};width:14px;height:14px;border-radius:50%;border:3px solid #f59e0b;box-shadow:0 0 0 2px rgba(245,158,11,0.5);cursor:grab;"></div>`, iconSize: [14, 14], iconAnchor: [7, 7] }));
           } else {
             selectedIds.delete(loc.id);
-            item.style.outline = "";
+            item.classList.remove("hj-ai-loc-highlight");
             const mkr2 = markerRefs[loc.id];
             if (mkr2) mkr2.setIcon(L2.divIcon({ className: "", html: `<div style="background:${badgeColor};width:14px;height:14px;border-radius:50%;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.4);cursor:grab;"></div>`, iconSize: [14, 14], iconAnchor: [7, 7] }));
           }
           updateMergeSelBtn();
         });
-        const badge = item.createEl("span");
-        badge.style.cssText = `background:${badgeColor};color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;white-space:nowrap;flex-shrink:0;`;
-        badge.setText(src === "exif" ? "GPS" : src.includes("high") ? "High" : src.includes("medium") ? "Mid" : src.includes("unknown") ? "?" : "Manual");
+        const badge = item.createEl("span", { cls: "hj-ai-badge" });
+        badge.style.background = badgeColor;
+        badge.setText(src === "exif" ? _hjT("step2.badgeGps") : src.includes("high") ? _hjT("step2.badgeHigh") : src.includes("medium") ? _hjT("step2.badgeMid") : src.includes("unknown") ? _hjT("step2.badgeUnknown") : _hjT("step2.badgeManual"));
         const titleIn = item.createEl("input", { type: "text", cls: "hj-wizard-input hj-loc-title", value: loc.title, placeholder: "Location name" });
-        titleIn.style.cssText = "flex:1;min-width:80px;";
+        titleIn.className = "hj-ai-loc-title";
         titleIn.addEventListener("input", () => {
           loc.title = titleIn.value;
           if (markerRefs[loc.id]) markerRefs[loc.id].setTooltipContent(loc.title);
         });
         const coordRow = item.createDiv();
-        coordRow.style.cssText = "display:flex;gap:4px;align-items:center;width:100%;";
+        coordRow.className = "hj-ai-coord-row";
         const latIn = coordRow.createEl("input", { type: "number", placeholder: "Lat", cls: "hj-wizard-input" });
         latIn.value = loc.lat ? String(loc.lat) : "";
-        latIn.style.cssText = "flex:1;min-width:0;";
+        latIn.className = "hj-ai-coord-input";
         latIn.addEventListener("change", () => {
           loc.lat = parseFloat(latIn.value) || 0;
           if (markerRefs[loc.id]) markerRefs[loc.id].setLatLng([loc.lat, loc.lng]);
         });
         const lngIn = coordRow.createEl("input", { type: "number", placeholder: "Lng", cls: "hj-wizard-input" });
         lngIn.value = loc.lng ? String(loc.lng) : "";
-        lngIn.style.cssText = "flex:1;min-width:0;";
+        lngIn.className = "hj-ai-coord-input";
         lngIn.addEventListener("change", () => {
           loc.lng = parseFloat(lngIn.value) || 0;
           if (markerRefs[loc.id]) markerRefs[loc.id].setLatLng([loc.lat, loc.lng]);
@@ -16166,26 +16599,26 @@ var JournalWizard = class extends import_obsidian4.Modal {
         inputRefs[loc.id] = { latIn, lngIn, item, titleIn };
         item.createEl("span", { text: `${loc.photos.length} photo${loc.photos.length !== 1 ? "s" : ""}`, cls: "hj-loc-coords" });
         if (geminiKey) {
-          const enrichBtn = item.createEl("button", { text: "AI Info", cls: "hj-btn-secondary hj-btn-sm" });
-          enrichBtn.title = "Get historical and travel information from AI for this location";
+          const enrichBtn = item.createEl("button", { text: _hjT("step2.aiInfo"), cls: "hj-btn-secondary hj-btn-sm" });
+          enrichBtn.title = _hjT("step2.aiInfoTitle");
           enrichBtn.addEventListener("click", async () => {
-            enrichBtn.disabled = true; enrichBtn.setText("Loading...");
+            enrichBtn.disabled = true; enrichBtn.setText(_hjT("step2.loading"));
             const info = await enrichLocationWithGemini(loc.lat, loc.lng, loc.title, geminiKey, this.settings && this.settings.geminiModel);
-            enrichBtn.disabled = false; enrichBtn.setText("AI Info");
+            enrichBtn.disabled = false; enrichBtn.setText(_hjT("step2.aiInfo"));
             if (info.description) {
               loc.description = info.description;
               if (info.highlights && info.highlights.length) {
                 loc.description += "\n\nHighlights:\n" + info.highlights.map((h) => "- " + h).join("\n");
               }
-              new import_obsidian4.Notice("AI info added for: " + loc.title);
+              new import_obsidian4.Notice(_hjT("step2.aiInfoAdded") + loc.title);
               let infoEl = item.querySelector(".hj-loc-ai-info");
               if (!infoEl) {
                 infoEl = item.createDiv({ cls: "hj-loc-ai-info" });
-                infoEl.style.cssText = "width:100%;font-size:12px;color:var(--text-muted);padding:6px 0 2px 0;border-top:1px solid var(--background-modifier-border);margin-top:4px;";
+                infoEl.className = "hj-ai-info-el";
               }
               infoEl.setText(info.description);
             } else {
-              new import_obsidian4.Notice("Could not get AI info for this location");
+              new import_obsidian4.Notice(_hjT("step2.aiInfoFailed"));
             }
           });
         }
@@ -16195,8 +16628,8 @@ var JournalWizard = class extends import_obsidian4.Modal {
           renderReview();
         });
       }
-      const addBtn = listCol.createEl("button", { text: "+ Add Location Manually", cls: "hj-btn-secondary hj-btn-sm" });
-      addBtn.style.marginTop = "6px";
+      const addBtn = listCol.createEl("button", { text: _hjT("step2.addManually"), cls: "hj-btn-secondary hj-btn-sm" });
+      addBtn.className = "hj-ai-add-btn";
       addBtn.addEventListener("click", () => {
         this.locationCounter++;
         this.locations.push({
@@ -16208,7 +16641,7 @@ var JournalWizard = class extends import_obsidian4.Modal {
       });
     };
     analyzeBtn.addEventListener("click", async () => {
-      if (this.photos.size === 0) { new import_obsidian4.Notice("Please upload photos first"); return; }
+      if (this.photos.size === 0) { new import_obsidian4.Notice(_hjT("step2.uploadFirst")); return; }
       analyzeBtn.disabled = true;
       this.locations = [];
       this.locationCounter = 0;
@@ -16297,32 +16730,28 @@ var JournalWizard = class extends import_obsidian4.Modal {
   renderAiLocationList(container, geminiKey, onRefresh) {
     container.empty();
     for (const loc of this.locations) {
-      const item = container.createDiv({ cls: "hj-location-item" });
-      item.style.cssText = "display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:8px;margin-bottom:6px;background:var(--background-secondary);border-radius:6px;";
+      const item = container.createDiv({ cls: "hj-ai-loc-item" });
       const src = loc.gpsSource || "";
       const badgeColor = src.includes("high") ? "#10b981" : src.includes("medium") ? "#f59e0b" : src.includes("unknown") ? "#6b7280" : "#3b82f6";
-      const badge = item.createEl("span");
-      badge.style.cssText = `background:${badgeColor};color:#fff;font-size:11px;padding:2px 6px;border-radius:10px;white-space:nowrap;`;
-      badge.setText(src.includes("high") ? "High" : src.includes("medium") ? "Mid" : src.includes("unknown") ? "? Unknown" : "Manual");
-      const titleIn = item.createEl("input", { type: "text", cls: "hj-wizard-input hj-loc-title", value: loc.title, placeholder: "Location name" });
-      titleIn.style.flex = "1";
+      const badge = item.createEl("span", { cls: "hj-ai-badge" });
+      badge.style.background = badgeColor;
+      badge.setText(src.includes("high") ? _hjT("step2.badgeHigh") : src.includes("medium") ? _hjT("step2.badgeMid") : src.includes("unknown") ? "? " + _hjT("step2.badgeUnknown") : _hjT("step2.badgeManual"));
+      const titleIn = item.createEl("input", { type: "text", cls: "hj-wizard-input hj-ai-loc-title", value: loc.title, placeholder: "Location name" });
       titleIn.addEventListener("input", () => { loc.title = titleIn.value; });
-      const latIn = item.createEl("input", { type: "number", placeholder: "Lat", cls: "hj-wizard-input" });
+      const latIn = item.createEl("input", { type: "number", placeholder: "Lat", cls: "hj-wizard-input hj-ai-coord-sm" });
       latIn.value = loc.lat ? String(loc.lat) : "";
-      latIn.style.cssText = "width:88px;";
       latIn.addEventListener("change", () => { loc.lat = parseFloat(latIn.value) || 0; });
-      const lngIn = item.createEl("input", { type: "number", placeholder: "Lng", cls: "hj-wizard-input" });
+      const lngIn = item.createEl("input", { type: "number", placeholder: "Lng", cls: "hj-wizard-input hj-ai-coord-sm" });
       lngIn.value = loc.lng ? String(loc.lng) : "";
-      lngIn.style.cssText = "width:88px;";
       lngIn.addEventListener("change", () => { loc.lng = parseFloat(lngIn.value) || 0; });
       item.createEl("span", { text: `${loc.photos.length} photos`, cls: "hj-loc-coords" });
       if (geminiKey) {
-        const enrichBtn = item.createEl("button", { text: "AI Info", cls: "hj-btn-secondary hj-btn-sm" });
-        enrichBtn.title = "Get historical and travel information from AI for this location";
+        const enrichBtn = item.createEl("button", { text: _hjT("step2.aiInfo"), cls: "hj-btn-secondary hj-btn-sm" });
+        enrichBtn.title = _hjT("step2.aiInfoTitle");
         enrichBtn.addEventListener("click", async () => {
-          enrichBtn.disabled = true; enrichBtn.setText("Loading...");
+          enrichBtn.disabled = true; enrichBtn.setText(_hjT("step2.loading"));
           const info = await enrichLocationWithGemini(loc.lat, loc.lng, loc.title, geminiKey, this.settings && this.settings.geminiModel);
-          enrichBtn.disabled = false; enrichBtn.setText("AI Info");
+          enrichBtn.disabled = false; enrichBtn.setText(_hjT("step2.aiInfo"));
           if (info.description) {
             loc.description = info.description;
             if (info.highlights && info.highlights.length) {
@@ -16332,11 +16761,11 @@ var JournalWizard = class extends import_obsidian4.Modal {
             let infoEl = item.querySelector(".hj-loc-ai-info");
             if (!infoEl) {
               infoEl = item.createDiv({ cls: "hj-loc-ai-info" });
-              infoEl.style.cssText = "width:100%;font-size:12px;color:var(--text-muted);padding:6px 0 2px 0;border-top:1px solid var(--background-modifier-border);margin-top:4px;";
+              infoEl.className = "hj-ai-info-el";
             }
             infoEl.setText(info.description);
           } else {
-            new import_obsidian4.Notice("Could not get AI info for this location");
+            new import_obsidian4.Notice(_hjT("step2.aiInfoFailed"));
           }
         });
       }
@@ -16346,7 +16775,7 @@ var JournalWizard = class extends import_obsidian4.Modal {
         if (onRefresh) onRefresh();
       });
     }
-    const addBtn = container.createEl("button", { text: "+ Add Location Manually", cls: "hj-btn-secondary hj-btn-sm" });
+    const addBtn = container.createEl("button", { text: _hjT("step2.addManually"), cls: "hj-btn-secondary hj-btn-sm" });
     addBtn.style.marginTop = "6px";
     addBtn.addEventListener("click", () => {
       this.locationCounter++;
@@ -16365,14 +16794,14 @@ var JournalWizard = class extends import_obsidian4.Modal {
   // ==============================
   renderStep3Photos() {
     const el = this.contentEl;
-    el.createEl("h2", { text: "Step 3: Photos" });
-    el.createEl("p", { text: "Upload photos then drag them into location pools. Click a location or map pin to select it.", cls: "hj-wizard-hint" });
+    el.createEl("h2", { text: _hjT("step3.title") });
+    el.createEl("p", { text: _hjT("step3.hint"), cls: "hj-wizard-hint" });
 
     // ---- Upload zone ----
     const uploadWrap = el.createDiv({ cls: "hj-wizard-field" });
     const uploadDrop = uploadWrap.createDiv({ cls: "hj-drop-zone hj-drop-sm" });
-    uploadDrop.createEl("div", { text: "Drop photos here or click to browse", cls: "hj-drop-icon" });
-    uploadDrop.createEl("div", { text: "New photos are added to the Unassigned pool", cls: "hj-drop-sub" });
+    uploadDrop.createEl("div", { text: _hjT("step3.dropUpload"), cls: "hj-drop-icon" });
+    uploadDrop.createEl("div", { text: _hjT("step3.dropSub"), cls: "hj-drop-sub" });
     const fileInput3 = uploadWrap.createEl("input", { type: "file" });
     fileInput3.accept = "image/*"; fileInput3.multiple = true; fileInput3.style.display = "none";
     uploadDrop.addEventListener("click", () => fileInput3.click());
@@ -16384,7 +16813,7 @@ var JournalWizard = class extends import_obsidian4.Modal {
 
     // ---- Map ----
     const mapWrap3 = el.createDiv({ cls: "hj-wizard-map-wrap" });
-    mapWrap3.style.cssText = "height:260px;margin-bottom:0;border-radius:8px 8px 0 0;overflow:hidden;border:1px solid var(--background-modifier-border);border-bottom:none;";
+    mapWrap3.className = "hj-step3-map";
     let map3Ref = null;
     const mapMarkers3 = {};
     const markerRowRefs = {};
@@ -16424,7 +16853,7 @@ var JournalWizard = class extends import_obsidian4.Modal {
 
     // ---- Location + Photo rows ----
     const rowsContainer = el.createDiv();
-    rowsContainer.style.cssText = "border:1px solid var(--background-modifier-border);border-radius:0 0 8px 8px;overflow:hidden;margin-bottom:12px;max-height:380px;overflow-y:auto;";
+    rowsContainer.className = "hj-step3-rows";
 
     const renderAllRows = () => {
       rowsContainer.empty();
@@ -16437,17 +16866,17 @@ var JournalWizard = class extends import_obsidian4.Modal {
       const assignedIds = new Set();
       for (const l3 of this.locations) for (const p3 of l3.photos) assignedIds.add(p3.id);
       // Rows: each location + an "Unassigned" row at the bottom
-      const rows3 = [...this.locations, { id: "unassigned", title: "Unassigned", lat: 0, lng: 0, photos: [] }];
+      const rows3 = [...this.locations, { id: "unassigned", title: _hjT("step3.unassigned"), lat: 0, lng: 0, photos: [] }];
       for (let ri = 0; ri < rows3.length; ri++) {
         const rl = rows3[ri];
         const isSel = this.selectedLocationId === rl.id;
         const isLast = ri === rows3.length - 1;
         const row = rowsContainer.createDiv();
-        row.style.cssText = `display:flex;align-items:stretch;${isLast ? "" : "border-bottom:1px solid var(--background-modifier-border);"}${isSel ? "background:#eff6ff;" : ""}`;
+        row.className = "hj-step3-row" + (isLast ? " hj-step3-row-last" : "") + (isSel ? " hj-step3-row-sel" : "");
         if (rl.id !== "unassigned") markerRowRefs[rl.id] = row;
         // Left cell: location name
         const nameCell = row.createDiv();
-        nameCell.style.cssText = `width:160px;flex-shrink:0;padding:10px 12px;cursor:pointer;border-right:1px solid var(--background-modifier-border);display:flex;flex-direction:column;justify-content:center;gap:3px;${isSel ? "font-weight:600;color:#2563eb;" : ""}`;
+        nameCell.className = "hj-step3-name" + (isSel ? " hj-step3-name-sel" : "");
         const photosInRow = rl.id === "unassigned"
           ? Array.from(this.photos.values()).filter((p3) => !assignedIds.has(p3.id))
           : rl.photos.map((p3) => this.photos.get(p3.id)).filter(Boolean);
@@ -16462,7 +16891,7 @@ var JournalWizard = class extends import_obsidian4.Modal {
         });
         // Right cell: photo pool (drag-and-drop target)
         const pool = row.createDiv();
-        pool.style.cssText = "flex:1;min-height:88px;padding:8px;display:flex;flex-wrap:wrap;gap:6px;align-content:flex-start;";
+        pool.className = "hj-step3-pool";
         pool.addEventListener("dragover", (e) => { e.preventDefault(); pool.style.background = "rgba(59,130,246,0.08)"; });
         pool.addEventListener("dragleave", () => { pool.style.background = ""; });
         pool.addEventListener("drop", (e) => {
@@ -16489,7 +16918,7 @@ var JournalWizard = class extends import_obsidian4.Modal {
         // Photo thumbnails
         for (const ph of photosInRow) {
           const card = pool.createDiv();
-          card.style.cssText = "position:relative;width:72px;height:72px;border-radius:6px;overflow:hidden;cursor:grab;flex-shrink:0;box-shadow:0 1px 3px rgba(0,0,0,0.15);";
+          card.className = "hj-step3-photo-card";
           card.draggable = true;
           card.addEventListener("dragstart", (e) => {
             e.dataTransfer.setData("text/photo-id", ph.id);
@@ -16500,19 +16929,19 @@ var JournalWizard = class extends import_obsidian4.Modal {
           const buf3 = this.photoBuffers.get(ph.id);
           if (buf3) {
             const img3 = card.createEl("img");
-            img3.style.cssText = "width:100%;height:100%;object-fit:cover;pointer-events:none;";
+            img3.className = "hj-step3-photo-img";
             const u3 = URL.createObjectURL(new Blob([buf3]));
             img3.src = u3;
             img3.addEventListener("load", () => URL.revokeObjectURL(u3));
           } else if (ph.imageUrl) {
             const img3 = card.createEl("img");
-            img3.style.cssText = "width:100%;height:100%;object-fit:cover;pointer-events:none;";
+            img3.className = "hj-step3-photo-img";
             img3.src = ph.imageUrl;
           }
           card.createEl("span", { text: ph.filename || ph.title || "", cls: "hj-photo-name-overlay" });
           const remBtn = card.createEl("button");
           remBtn.textContent = "×";
-          remBtn.style.cssText = "position:absolute;top:2px;right:2px;background:rgba(0,0,0,0.55);color:#fff;border:none;border-radius:50%;width:18px;height:18px;font-size:12px;cursor:pointer;line-height:1;padding:0;display:flex;align-items:center;justify-content:center;";
+          remBtn.className = "hj-photo-remove-btn";
           remBtn.addEventListener("click", (e) => {
             e.stopPropagation();
             if (rl.id !== "unassigned") {
@@ -16525,16 +16954,16 @@ var JournalWizard = class extends import_obsidian4.Modal {
           });
         }
         if (photosInRow.length === 0) {
-          pool.createEl("span", { text: "Drop photos here", cls: "hj-empty-hint" });
+          pool.createEl("span", { text: _hjT("step3.dropHere"), cls: "hj-empty-hint" });
         }
       }
     };
     renderAllRows();
 
     this.renderFooter(el, {
-      backLabel: "← Back",
+      backLabel: _hjT("step3.backLabel"),
       onBack: () => { this.step = 2; this.renderStep(); },
-      nextLabel: "Next: Edit Blog →",
+      nextLabel: _hjT("step3.nextLabel"),
       onNext: () => { this.step = 4; this.renderStep(); }
     });
   }
@@ -16543,9 +16972,9 @@ var JournalWizard = class extends import_obsidian4.Modal {
   // ==============================
   renderStep4Structure() {
     const el = this.contentEl;
-    el.createEl("h2", { text: "Step 4: Blog Sections" });
+    el.createEl("h2", { text: _hjT("step4.title") });
     el.createEl("p", {
-      text: "Create sections for your blog, then check locations to assign them. Locations are listed in route order.",
+      text: _hjT("step4.hint"),
       cls: "hj-wizard-hint"
     });
     // Cache blob URLs so we don't recreate them on every render
@@ -16566,11 +16995,36 @@ var JournalWizard = class extends import_obsidian4.Modal {
     if (this.tracks.length === 0) {
       routeGroups.set("default", { name: this.config.name, track: null });
     }
+    // Sort locations along GPX track by finding nearest track point index
+    const sortByTrackPosition = (locs, track) => {
+      if (!track || !track.result || !track.result.trackPoints || track.result.trackPoints.length < 2) {
+        return [...locs].sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0));
+      }
+      const pts = track.result.trackPoints;
+      const nearestIdx = (lat, lng) => {
+        let best = 0, bestD = Infinity;
+        // Sample every 5th point for speed
+        for (let i = 0; i < pts.length; i += 5) {
+          const d = (pts[i].lat - lat) ** 2 + (pts[i].lng - lng) ** 2;
+          if (d < bestD) { bestD = d; best = i; }
+        }
+        // Refine around the best
+        const lo = Math.max(0, best - 5), hi = Math.min(pts.length - 1, best + 5);
+        for (let i = lo; i <= hi; i++) {
+          const d = (pts[i].lat - lat) ** 2 + (pts[i].lng - lng) ** 2;
+          if (d < bestD) { bestD = d; best = i; }
+        }
+        return best;
+      };
+      return [...locs].sort((a, b) => {
+        if (!a.lat || !b.lat) return (a.sortOrder || 0) - (b.sortOrder || 0);
+        return nearestIdx(a.lat, a.lng) - nearestIdx(b.lat, b.lng);
+      });
+    };
     const routeLocsMap = new Map();
-    for (const [routeId] of routeGroups) {
-      routeLocsMap.set(routeId, this.locations
-        .filter((l) => (l.routeId || "default") === routeId)
-        .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0)));
+    for (const [routeId, group] of routeGroups) {
+      const locs = this.locations.filter((l) => (l.routeId || "default") === routeId);
+      routeLocsMap.set(routeId, sortByTrackPosition(locs, group.track));
     }
     // Track all checkbox/row refs so we can update states without re-rendering
     // Key: `${secId}:${locId}` → { cb, row }
@@ -16610,7 +17064,7 @@ var JournalWizard = class extends import_obsidian4.Modal {
         routeHeader.createEl("span", { text: "##", cls: "hj-section-level" });
         const routeTitleIn = routeHeader.createEl("input", {
           type: "text", cls: "hj-section-title-input",
-          value: group.name, placeholder: "Route / Day name"
+          value: group.name, placeholder: _hjT("step4.routeNamePh")
         });
         routeTitleIn.addEventListener("input", () => {
           if (group.track) group.track.name = routeTitleIn.value;
@@ -16624,10 +17078,10 @@ var JournalWizard = class extends import_obsidian4.Modal {
           secHeader.createEl("span", { text: "###", cls: "hj-section-level" });
           const secTitleIn = secHeader.createEl("input", {
             type: "text", cls: "hj-section-title-input",
-            value: sec.title, placeholder: "Section title"
+            value: sec.title, placeholder: _hjT("step4.sectionPh")
           });
           secTitleIn.addEventListener("input", () => { sec.title = secTitleIn.value; });
-          const delSecBtn = secHeader.createEl("button", { text: "\u2715", cls: "hj-btn-icon-sm", attr: { title: "Delete section" } });
+          const delSecBtn = secHeader.createEl("button", { text: "\u2715", cls: "hj-btn-icon-sm", attr: { title: _hjT("step4.deleteSection") } });
           delSecBtn.addEventListener("click", () => {
             this.sections = this.sections.filter((s) => s.id !== sec.id);
             renderStructure();
@@ -16661,13 +17115,13 @@ var JournalWizard = class extends import_obsidian4.Modal {
           // Blog text area
           const blogArea = secBlock.createEl("textarea", {
             cls: "hj-wizard-textarea hj-blog-textarea",
-            placeholder: "Write your story for this section..."
+            placeholder: _hjT("step4.blogPh")
           });
           blogArea.value = sec.text || "";
           blogArea.rows = 3;
           blogArea.addEventListener("input", () => { sec.text = blogArea.value; });
         }
-        const addSecBtn = routeBlock.createEl("button", { text: "+ Add Section", cls: "hj-btn-sm hj-add-section-btn" });
+        const addSecBtn = routeBlock.createEl("button", { text: _hjT("step4.addSection"), cls: "hj-btn-sm hj-add-section-btn" });
         addSecBtn.addEventListener("click", () => {
           this.sections.push({
             id: `sec-${++this.sectionCounter}`,
@@ -16683,9 +17137,9 @@ var JournalWizard = class extends import_obsidian4.Modal {
     };
     renderStructure();
     this.renderFooter(el, {
-      backLabel: "\u2190 Back",
+      backLabel: _hjT("step4.backLabel"),
       onBack: () => { this.step = 3; this.renderStep(); },
-      nextLabel: "Next: Review & Generate \u2192",
+      nextLabel: _hjT("step4.nextLabel"),
       onNext: () => { this.step = 5; this.renderStep(); }
     });
   }
@@ -16694,22 +17148,22 @@ var JournalWizard = class extends import_obsidian4.Modal {
   // ==============================
   renderStep5Review() {
     const el = this.contentEl;
-    el.createEl("h2", { text: this.existingTripId ? "Step 5: Review & Append" : "Step 5: Review & Generate" });
+    el.createEl("h2", { text: this.existingTripId ? _hjT("step5.titleEdit") : _hjT("step5.titleNew") });
     const summary = el.createDiv({ cls: "hj-wizard-summary" });
     if (this.existingTripId) {
-      summary.createEl("div", { text: `Adding to journal: ${this.existingTripId}`, cls: "hj-summary-name" });
+      summary.createEl("div", { text: _hjT("step5.addingTo") + this.existingTripId, cls: "hj-summary-name" });
     } else {
       summary.createEl("div", { text: `${this.config.name}`, cls: "hj-summary-name" });
       const dateStr = this.config.endDate ? `${this.config.date} – ${this.config.endDate}` : this.config.date;
       summary.createEl("div", { text: `${dateStr} | ${this.config.region}` });
     }
-    summary.createEl("div", { text: `${this.tracks.length} route(s) | ${this.locations.length} location(s) | ${this.photos.size} photo(s)` });
+    summary.createEl("div", { text: `${this.tracks.length} ${_hjT("step5.routes")} | ${this.locations.length} ${_hjT("step5.locations")} | ${this.photos.size} ${_hjT("step5.photos")}` });
     if (this.tracks.length > 0) {
       const totalKm = this.tracks.reduce((s, t) => s + (t.result?.totalDistanceKm || 0), 0);
-      summary.createEl("div", { text: `Total distance: ${totalKm.toFixed(1)} km` });
+      summary.createEl("div", { text: _hjT("step5.totalDist") + `${totalKm.toFixed(1)} km` });
     }
     // Markdown preview toggle
-    const previewToggle = el.createEl("button", { text: "Preview Markdown", cls: "hj-btn-secondary hj-btn-sm" });
+    const previewToggle = el.createEl("button", { text: _hjT("step5.previewMd"), cls: "hj-btn-secondary hj-btn-sm" });
     const previewEl = el.createDiv({ cls: "hj-markdown-preview" });
     previewEl.style.display = "none";
     previewToggle.addEventListener("click", () => {
@@ -16723,14 +17177,14 @@ var JournalWizard = class extends import_obsidian4.Modal {
         previewEl.empty();
         previewEl.createEl("pre", { cls: "hj-preview-code" }).createEl("code", { text: md });
         previewEl.style.display = "block";
-        previewToggle.setText("Hide Preview");
+        previewToggle.setText(_hjT("step5.hidePreview"));
       } else {
         previewEl.style.display = "none";
-        previewToggle.setText("Preview Markdown");
+        previewToggle.setText(_hjT("step5.previewMd"));
       }
     });
     // Outline
-    el.createEl("h3", { text: "Structure Outline", cls: "hj-outline-title" });
+    el.createEl("h3", { text: _hjT("step5.structureOutline"), cls: "hj-outline-title" });
     const outline = el.createDiv({ cls: "hj-outline" });
     for (const track of this.tracks) {
       const h2El = outline.createDiv({ cls: "hj-outline-h2" });
@@ -16744,17 +17198,17 @@ var JournalWizard = class extends import_obsidian4.Modal {
       }
     }
     // Output info
-    el.createEl("h3", { text: "Output", cls: "hj-outline-title" });
+    el.createEl("h3", { text: _hjT("step5.output"), cls: "hj-outline-title" });
     const outputInfo = el.createDiv({ cls: "hj-wizard-output-info" });
-    outputInfo.createEl("div", { text: "Single Markdown file with all sections and photo embeds" });
-    outputInfo.createEl("div", { text: "Photos copied into the trip folder alongside the .md file" });
+    outputInfo.createEl("div", { text: _hjT("step5.outputMd") });
+    outputInfo.createEl("div", { text: _hjT("step5.outputPhotos") });
     if (this.tracks.length > 0)
-      outputInfo.createEl("div", { text: `${this.tracks.length} route file(s) included` });
-    outputInfo.createEl("div", { text: "Edit the .md file directly in Obsidian to update your journal", cls: "hj-output-hint" });
+      outputInfo.createEl("div", { text: `${this.tracks.length} ${_hjT("step5.outputRoutes")}` });
+    outputInfo.createEl("div", { text: _hjT("step5.outputEdit"), cls: "hj-output-hint" });
     this.renderFooter(el, {
-      backLabel: "\u2190 Back",
+      backLabel: _hjT("step5.backLabel"),
       onBack: () => { this.step = 4; this.renderStep(); },
-      nextLabel: this.existingTripId ? "Append to Journal" : "Generate Journal",
+      nextLabel: this.existingTripId ? _hjT("step5.appendBtn") : _hjT("step5.generateBtn"),
       nextCls: "hj-btn-primary",
       onNext: async () => { this.existingTripId ? await this.appendToExistingJournal() : await this.generateJournalV4(); }
     });
@@ -16763,7 +17217,7 @@ var JournalWizard = class extends import_obsidian4.Modal {
   // Append to Existing Journal
   // ==============================
   async appendToExistingJournal() {
-    const notice = new import_obsidian4.Notice("Appending routes...", 0);
+    const notice = new import_obsidian4.Notice(_hjT("notice.appendingRoutes"), 0);
     try {
       const newRoutes = this.tracks.map((t, i) => ({
         id: t.id,
@@ -16795,7 +17249,7 @@ var JournalWizard = class extends import_obsidian4.Modal {
       }
       await this.manager.appendRouteToJournal(this.existingTripId, newRoutes, this.locations, this.photoBuffers);
       notice.hide();
-      new import_obsidian4.Notice("Routes appended successfully!");
+      new import_obsidian4.Notice(_hjT("notice.appendSuccess"));
       this.close();
       this.onComplete?.();
     } catch (err) {
@@ -16807,9 +17261,9 @@ var JournalWizard = class extends import_obsidian4.Modal {
   // Legacy Step 2 (kept for backward compat, not used in new flow)
   renderStep2() {
     const el = this.contentEl;
-    el.createEl("h2", { text: "\u{1F4F8} Step 2: Import Photos" });
+    el.createEl("h2", { text: _hjT("qa.step2.title") });
     el.createEl("p", {
-      text: "Add your photos. GPS coordinates will be automatically extracted from EXIF data.",
+      text: _hjT("qa.step2.hint"),
       cls: "hj-wizard-hint"
     });
     const statsBar = el.createDiv({ cls: "hj-wizard-stats" });
@@ -16821,8 +17275,8 @@ var JournalWizard = class extends import_obsidian4.Modal {
     updateStats();
     const dropZone = el.createDiv({ cls: "hj-drop-zone" });
     dropZone.createEl("div", { text: "\u{1F4F7}", cls: "hj-drop-icon" });
-    dropZone.createEl("div", { text: "Drop photos here or click to browse" });
-    dropZone.createEl("div", { text: "Supports JPG, PNG, HEIC", cls: "hj-drop-sub" });
+    dropZone.createEl("div", { text: _hjT("qa.step2.dropText") });
+    dropZone.createEl("div", { text: _hjT("qa.step2.dropSub"), cls: "hj-drop-sub" });
     const fileInput = el.createEl("input", { type: "file" });
     fileInput.accept = "image/*";
     fileInput.multiple = true;
@@ -16853,7 +17307,7 @@ var JournalWizard = class extends import_obsidian4.Modal {
     const renderPhotoGrid = () => {
       gridContainer.empty();
       if (this.photos.size === 0) {
-        gridContainer.createDiv({ text: "No photos imported yet.", cls: "hj-empty-hint" });
+        gridContainer.createDiv({ text: _hjT("qa.step2.noPhotos"), cls: "hj-empty-hint" });
         return;
       }
       const grid = gridContainer.createDiv({ cls: "hj-photo-grid" });
@@ -16873,9 +17327,9 @@ var JournalWizard = class extends import_obsidian4.Modal {
           img.addEventListener("load", () => URL.revokeObjectURL(img.src));
         }
         if (photo.exif.hasGps) {
-          card.createDiv({ text: "\u{1F4CD} GPS", cls: "hj-photo-badge hj-badge-gps" });
+          card.createDiv({ text: _hjT("qa.step2.gps"), cls: "hj-photo-badge hj-badge-gps" });
         } else {
-          card.createDiv({ text: "\u274C No GPS", cls: "hj-photo-badge hj-badge-nogps" });
+          card.createDiv({ text: _hjT("qa.step2.noGps"), cls: "hj-photo-badge hj-badge-nogps" });
         }
         const info = card.createDiv({ cls: "hj-photo-info" });
         info.createEl("div", { text: photo.filename, cls: "hj-photo-name" });
@@ -16904,10 +17358,10 @@ var JournalWizard = class extends import_obsidian4.Modal {
         this.step = 1;
         this.renderStep();
       },
-      nextLabel: "Next: Organize Sections \u2192",
+      nextLabel: _hjT("qa.step2.nextLabel"),
       onNext: () => {
         if (this.photos.size === 0 && !this.trackResult) {
-          new import_obsidian4.Notice("Please import photos or a GPX track file");
+          new import_obsidian4.Notice(_hjT("qa.step2.needPhotos"));
           return;
         }
         if (this.photos.size === 0) {
@@ -16927,27 +17381,27 @@ var JournalWizard = class extends import_obsidian4.Modal {
   // ==============================
   renderStep3() {
     const el = this.contentEl;
-    el.createEl("h2", { text: "\u{1F4C2} Step 3: Organize Sections" });
+    el.createEl("h2", { text: _hjT("qa.step3.title") });
     el.createEl("p", {
-      text: "Create sections (H2 = major locations, H3 = sub-sections) and assign photos to each.",
+      text: _hjT("qa.step3.hint"),
       cls: "hj-wizard-hint"
     });
     const toolbar = el.createDiv({ cls: "hj-section-toolbar" });
-    const addH2Btn = toolbar.createEl("button", { text: "+ Add Section (H2)", cls: "hj-btn-primary hj-btn-sm" });
+    const addH2Btn = toolbar.createEl("button", { text: _hjT("qa.step3.addH2"), cls: "hj-btn-primary hj-btn-sm" });
     addH2Btn.addEventListener("click", () => {
       this.addSection(2);
       renderSections();
     });
-    const addH3Btn = toolbar.createEl("button", { text: "+ Add Sub-section (H3)", cls: "hj-btn-secondary hj-btn-sm" });
+    const addH3Btn = toolbar.createEl("button", { text: _hjT("qa.step3.addH3"), cls: "hj-btn-secondary hj-btn-sm" });
     addH3Btn.addEventListener("click", () => {
       if (this.sections.filter((s2) => s2.level === 2).length === 0) {
-        new import_obsidian4.Notice("Add a main section (H2) first");
+        new import_obsidian4.Notice(_hjT("qa.step3.addH2First"));
         return;
       }
       this.addSection(3);
       renderSections();
     });
-    const autoBtn = toolbar.createEl("button", { text: "\u{1F504} Auto-organize", cls: "hj-btn-secondary hj-btn-sm" });
+    const autoBtn = toolbar.createEl("button", { text: _hjT("qa.step3.autoOrg"), cls: "hj-btn-secondary hj-btn-sm" });
     autoBtn.addEventListener("click", () => {
       this.autoCreateSections();
       renderSections();
@@ -16956,7 +17410,7 @@ var JournalWizard = class extends import_obsidian4.Modal {
     const renderSections = () => {
       sectionsEl.empty();
       if (this.sections.length === 0) {
-        sectionsEl.createDiv({ text: 'No sections yet. Click "Add Section" or "Auto-organize" above.', cls: "hj-empty-hint" });
+        sectionsEl.createDiv({ text: _hjT("qa.step3.noSections"), cls: "hj-empty-hint" });
         return;
       }
       const h2s = this.sections.filter((s2) => s2.level === 2);
@@ -16990,7 +17444,7 @@ var JournalWizard = class extends import_obsidian4.Modal {
         this.step = 2;
         this.renderStep();
       },
-      nextLabel: "Next: Review & Generate \u2192",
+      nextLabel: _hjT("qa.step3.nextLabel"),
       onNext: () => {
         this.step = 4;
         this.renderStep();
@@ -17005,7 +17459,7 @@ var JournalWizard = class extends import_obsidian4.Modal {
       type: "text",
       cls: "hj-section-title-input",
       value: section.title,
-      placeholder: section.level === 2 ? "Major Location Name" : "Sub-section Name"
+      placeholder: section.level === 2 ? _hjT("qa.step3.majorPh") : _hjT("qa.step3.subPh")
     });
     titleInput.addEventListener("input", () => {
       section.title = titleInput.value;
@@ -17072,10 +17526,10 @@ var JournalWizard = class extends import_obsidian4.Modal {
     if (photo.exif.hasGps)
       el.createEl("span", { text: "\u{1F4CD}", cls: "hj-mini-gps" });
     const assignSelect = el.createEl("select", { cls: "hj-mini-assign" });
-    assignSelect.createEl("option", { value: "", text: "\u2192 Move to..." });
+    assignSelect.createEl("option", { value: "", text: _hjT("qa.step3.moveTo") });
     for (const s2 of this.sections) {
       const prefix = s2.level === 3 ? "  \u2514 " : "";
-      assignSelect.createEl("option", { value: s2.id, text: `${prefix}${s2.title || "Untitled"}` });
+      assignSelect.createEl("option", { value: s2.id, text: `${prefix}${s2.title || _hjT("qa.step3.untitled")}` });
     }
     assignSelect.addEventListener("change", () => {
       if (!assignSelect.value)
@@ -17093,14 +17547,14 @@ var JournalWizard = class extends import_obsidian4.Modal {
   // ==============================
   renderStep4() {
     const el = this.contentEl;
-    el.createEl("h2", { text: "\u2705 Step 4: Review & Generate" });
+    el.createEl("h2", { text: _hjT("qa.step4.title") });
     const isGpxOnly = this.photos.size === 0 && !!this.trackResult;
     const summary = el.createDiv({ cls: "hj-wizard-summary" });
     summary.createEl("div", { text: `\u{1F4DD} ${this.config.name}`, cls: "hj-summary-name" });
     summary.createEl("div", { text: `\u{1F4C5} ${this.config.date} \u2022 \u{1F4CD} ${this.config.region}` });
     if (isGpxOnly) {
       summary.createEl("div", { text: `\u{1F5FA}\uFE0F GPX track: ${this.trackResult.trackPoints.length} points, ${this.trackResult.totalDistanceKm.toFixed(1)} km` });
-      summary.createEl("div", { text: "\u{1F4CD} Scroll stops will be auto-generated along the route", cls: "hj-summary-hint" });
+      summary.createEl("div", { text: _hjT("qa.step4.gpxStops"), cls: "hj-summary-hint" });
     } else {
       summary.createEl("div", { text: `\u{1F4F8} ${this.photos.size} photos \u2022 \u{1F4C2} ${this.sections.length} sections` });
     }
@@ -17108,11 +17562,11 @@ var JournalWizard = class extends import_obsidian4.Modal {
     const noGpsCount = this.photos.size - gpsCount;
     if (noGpsCount > 0) {
       summary.createEl("div", {
-        text: `\u26A0\uFE0F ${noGpsCount} photo(s) without GPS \u2014 fill in the markdown later`,
+        text: `\u26A0\uFE0F ${noGpsCount} ${_hjT("qa.step4.noGpsWarn")}`,
         cls: "hj-summary-warn"
       });
     }
-    const previewToggle = el.createEl("button", { text: "\u{1F441}\uFE0F Preview Markdown", cls: "hj-btn-secondary hj-btn-sm" });
+    const previewToggle = el.createEl("button", { text: _hjT("qa.step4.previewMd"), cls: "hj-btn-secondary hj-btn-sm" });
     const previewEl = el.createDiv({ cls: "hj-markdown-preview" });
     previewEl.style.display = "none";
     previewToggle.addEventListener("click", () => {
@@ -17121,38 +17575,38 @@ var JournalWizard = class extends import_obsidian4.Modal {
         previewEl.empty();
         previewEl.createEl("pre", { cls: "hj-preview-code" }).createEl("code", { text: md });
         previewEl.style.display = "block";
-        previewToggle.setText("\u{1F648} Hide Preview");
+        previewToggle.setText(_hjT("qa.step4.hidePreview"));
       } else {
         previewEl.style.display = "none";
-        previewToggle.setText("\u{1F441}\uFE0F Preview Markdown");
+        previewToggle.setText(_hjT("qa.step4.previewMd"));
       }
     });
-    el.createEl("h3", { text: "Section Outline", cls: "hj-outline-title" });
+    el.createEl("h3", { text: _hjT("qa.step4.sectionOutline"), cls: "hj-outline-title" });
     const outline = el.createDiv({ cls: "hj-outline" });
     for (const section of this.sections.filter((s2) => s2.level === 2)) {
       const h2El = outline.createDiv({ cls: "hj-outline-h2" });
-      h2El.createEl("span", { text: `## ${section.title || "Untitled"}` });
+      h2El.createEl("span", { text: `## ${section.title || _hjT("qa.step3.untitled")}` });
       h2El.createEl("span", { text: ` (${section.photos.length} photos)`, cls: "hj-outline-count" });
       for (const child of this.sections.filter((s2) => s2.parentId === section.id)) {
         const h3El = outline.createDiv({ cls: "hj-outline-h3" });
-        h3El.createEl("span", { text: `### ${child.title || "Untitled"}` });
+        h3El.createEl("span", { text: `### ${child.title || _hjT("qa.step3.untitled")}` });
         h3El.createEl("span", { text: ` (${child.photos.length} photos)`, cls: "hj-outline-count" });
       }
     }
-    el.createEl("h3", { text: "Output", cls: "hj-outline-title" });
+    el.createEl("h3", { text: _hjT("qa.step4.output"), cls: "hj-outline-title" });
     const outputInfo = el.createDiv({ cls: "hj-wizard-output-info" });
-    outputInfo.createEl("div", { text: "\u{1F4C4} One single Markdown file with all sections and photo embeds" });
-    outputInfo.createEl("div", { text: "\u{1F5BC}\uFE0F Photos copied into the trip folder alongside the .md file" });
+    outputInfo.createEl("div", { text: _hjT("qa.step4.outputMd") });
+    outputInfo.createEl("div", { text: _hjT("qa.step4.outputPhotos") });
     if (this.trackResult)
       outputInfo.createEl("div", { text: `\u{1F5FA}\uFE0F ${formatLabel(this.trackResult.format)} route file included (${this.trackFileName})` });
-    outputInfo.createEl("div", { text: "\u2192 Edit the .md file directly in Obsidian to write your stories", cls: "hj-output-hint" });
+    outputInfo.createEl("div", { text: _hjT("qa.step4.outputEdit"), cls: "hj-output-hint" });
     this.renderFooter(el, {
-      backLabel: "\u2190 Back",
+      backLabel: _hjT("step2.backLabel"),
       onBack: () => {
         this.step = isGpxOnly ? 2 : 3;
         this.renderStep();
       },
-      nextLabel: "\u{1F680} Generate Journal",
+      nextLabel: _hjT("qa.step4.generateBtn"),
       nextCls: "hj-btn-primary",
       onNext: async () => {
         await this.generateJournal();
@@ -17167,10 +17621,10 @@ var JournalWizard = class extends import_obsidian4.Modal {
       (f2) => f2.type.startsWith("image/") || /\.(jpe?g|png|heic|heif|webp|tiff?)$/i.test(f2.name)
     );
     if (imageFiles.length === 0) {
-      new import_obsidian4.Notice("No image files found");
+      new import_obsidian4.Notice(_hjT("notice.noImages"));
       return;
     }
-    const notice = new import_obsidian4.Notice(`Importing ${imageFiles.length} photos...`, 0);
+    const notice = new import_obsidian4.Notice(_hjT("notice.importingPhotos").replace("{0}", imageFiles.length), 0);
     for (const file of imageFiles) {
       const buffer = await file.arrayBuffer();
       const exif = await extractExifGps(buffer);
@@ -17246,7 +17700,7 @@ var JournalWizard = class extends import_obsidian4.Modal {
   // V4 Journal Generation (multi-route)
   // ==============================
   async generateJournalV4() {
-    const notice = new import_obsidian4.Notice("Generating journal...", 0);
+    const notice = new import_obsidian4.Notice(_hjT("notice.generatingJournal"), 0);
     try {
       const slug = this.config.name.toLowerCase().replace(/[^a-z0-9\u4e00-\u9fff]+/g, "-").replace(/^-|-$/g, "").slice(0, 60) || `trip-${Date.now()}`;
       const folder = `${ROOT2}/${slug}`;
@@ -17356,7 +17810,7 @@ var JournalWizard = class extends import_obsidian4.Modal {
       const wpCount = this.locations.length || this.photos.size;
       await this.manager.registerJournal(slug, this.config, wpCount, totalDist, centerLat, centerLng, routes.length);
       notice.hide();
-      new import_obsidian4.Notice(`Journal created: ${slug}.md`);
+      new import_obsidian4.Notice(_hjT("notice.journalCreated") + `${slug}.md`);
       this.close();
       this.onComplete(mdPath);
     } catch (err) {
@@ -17369,7 +17823,7 @@ var JournalWizard = class extends import_obsidian4.Modal {
    * Legacy V3 journal generation (kept for backward compat).
    */
   async generateJournal() {
-    const notice = new import_obsidian4.Notice("Generating journal...", 0);
+    const notice = new import_obsidian4.Notice(_hjT("notice.generatingJournal"), 0);
     try {
       const slug = this.config.name.toLowerCase().replace(/[^a-z0-9\u4e00-\u9fff]+/g, "-").replace(/^-|-$/g, "").slice(0, 60) || `trip-${Date.now()}`;
       const folder = `${ROOT2}/${slug}`;
@@ -17428,7 +17882,7 @@ var JournalWizard = class extends import_obsidian4.Modal {
       }
       await this.manager.registerJournal(slug, this.config, wpCount, distKm, centerLat, centerLng);
       notice.hide();
-      new import_obsidian4.Notice(`\u2705 Journal created: ${slug}.md`);
+      new import_obsidian4.Notice(_hjT("notice.journalCreated") + `${slug}.md`);
       this.close();
       this.onComplete(mdPath);
     } catch (err) {
@@ -17543,7 +17997,7 @@ var AddRouteWizard = class {
     const nextBtn = btnGroup.createEl("button", { text: "Next: Add Locations \u2192", cls: "hj-btn-primary" });
     nextBtn.addEventListener("click", () => {
       if (this.tracks.length === 0) {
-        new import_obsidian4.Notice("Please upload at least one route file");
+        new import_obsidian4.Notice(_hjT("step1.uploadRoute"));
         return;
       }
       this.step = 2;
@@ -17605,7 +18059,7 @@ var AddRouteWizard = class {
     backBtn.addEventListener("click", () => { this.step = 2; this.renderWizardStep(); });
     const saveBtn = btnGroup.createEl("button", { text: "Append Routes", cls: "hj-btn-primary" });
     saveBtn.addEventListener("click", async () => {
-      const notice = new import_obsidian4.Notice("Appending routes...", 0);
+      const notice = new import_obsidian4.Notice(_hjT("notice.appendingRoutes"), 0);
       try {
         const newRoutes = this.tracks.map((t, i) => ({
           id: t.id, name: t.name, date: t.date || "",
@@ -17631,8 +18085,9 @@ var AddRouteWizard = class {
   }
 };
 
+
 // src/settings.ts
-var DEFAULT_SETTINGS = { stadiaApiKey: "", geminiApiKey: "", geminiModel: "gemini-2.0-flash" };
+var DEFAULT_SETTINGS = { stadiaApiKey: "", geminiApiKey: "", geminiModel: "gemini-2.0-flash", language: "auto" };
 var HJSettingTab = class extends import_obsidian5.PluginSettingTab {
   constructor(app2, plugin) {
     super(app2, plugin);
@@ -17641,16 +18096,31 @@ var HJSettingTab = class extends import_obsidian5.PluginSettingTab {
   display() {
     const { containerEl } = this;
     containerEl.empty();
-    containerEl.createEl("h2", { text: "HikerScrolls Settings" });
-    const mottoEl = containerEl.createEl("p", { text: "Everybody can tell their own story on the road." });
-    mottoEl.style.cssText = "font-style: italic; opacity: 0.7; margin-top: -8px; margin-bottom: 16px;";
+    containerEl.createEl("h2", { text: _hjT("settings.title") });
+    const mottoEl = containerEl.createEl("p", { text: _hjT("settings.motto") });
+    mottoEl.className = "hj-settings-motto";
     new import_obsidian5.Setting(containerEl)
-      .setName("Stadia Maps API Key")
-      .setDesc("Free API key from stadiamaps.com — required for Stamen Toner / Watercolor tiles. Leave empty to disable those map styles.")
+      .setName(_hjT("settings.language"))
+      .setDesc(_hjT("settings.languageDesc"))
+      .addDropdown((drop) => {
+        drop.addOption("auto", _hjT("settings.langAuto"));
+        drop.addOption("en", "English");
+        drop.addOption("zh", "\u4e2d\u6587");
+        drop.setValue(this.plugin.settings.language || "auto");
+        drop.onChange(async (value) => {
+          this.plugin.settings.language = value;
+          _hjSetLang(value);
+          await this.plugin.saveSettings();
+          this.display();
+        });
+      });
+    new import_obsidian5.Setting(containerEl)
+      .setName(_hjT("settings.stadiaName"))
+      .setDesc(_hjT("settings.stadiaDesc"))
       .addText((text) => {
         text.inputEl.type = "password";
         text
-          .setPlaceholder("Enter your API key")
+          .setPlaceholder(_hjT("settings.stadiaPlaceholder"))
           .setValue(this.plugin.settings.stadiaApiKey)
           .onChange(async (value) => {
             this.plugin.settings.stadiaApiKey = value.trim();
@@ -17658,14 +18128,14 @@ var HJSettingTab = class extends import_obsidian5.PluginSettingTab {
             await this.plugin.saveSettings();
           });
       });
-    containerEl.createEl("h3", { text: "AI Features (Gemini)" });
+    containerEl.createEl("h3", { text: _hjT("settings.aiTitle") });
     new import_obsidian5.Setting(containerEl)
-      .setName("Gemini API Key")
-      .setDesc("Google Gemini API key for AI-assisted location detection and enrichment. Get one free at aistudio.google.com.")
+      .setName(_hjT("settings.geminiName"))
+      .setDesc(_hjT("settings.geminiDesc"))
       .addText((text) => {
         text.inputEl.type = "password";
         text
-          .setPlaceholder("Enter your Gemini API key")
+          .setPlaceholder(_hjT("settings.geminiPlaceholder"))
           .setValue(this.plugin.settings.geminiApiKey)
           .onChange(async (value) => {
             this.plugin.settings.geminiApiKey = value.trim();
@@ -17673,8 +18143,8 @@ var HJSettingTab = class extends import_obsidian5.PluginSettingTab {
           });
       });
     new import_obsidian5.Setting(containerEl)
-      .setName("Gemini Model")
-      .setDesc("Select the Gemini model for AI analysis and enrichment.")
+      .setName(_hjT("settings.modelName"))
+      .setDesc(_hjT("settings.modelDesc"))
       .addDropdown((drop) => {
         const GEMINI_MODELS = [
           { value: "gemini-3.1-flash-lite-preview", label: "Gemini 3.1 Flash Lite Preview" },
@@ -17700,14 +18170,14 @@ var HJSettingTab = class extends import_obsidian5.PluginSettingTab {
 // src/main.ts
 var HikingJournalPlugin = class extends import_obsidian5.Plugin {
   async onload() {
-    console.log("[HJ] Plugin loading...");
+    // plugin loading
     await this.loadSettings();
     this.addSettingTab(new HJSettingTab(this.app, this));
     // Register custom icon: Journal Cover with mountain peaks
     (0, import_obsidian5.addIcon)("hiking-journal", '<rect x="20" y="10" width="60" height="78" rx="5" stroke="currentColor" fill="none" stroke-width="5"/><line x1="20" y1="26" x2="80" y2="26" stroke="currentColor" stroke-width="3.5"/><path d="M28 74 L46 34 L54 46 L68 28 L78 48" stroke="currentColor" fill="none" stroke-width="5" stroke-linejoin="round" stroke-linecap="round"/>');
     this.mgr = new TripManager(this.app);
     await this.mgr.loadIndex();
-    console.log("[HJ] Index loaded, trips:", this.mgr.getIndex().trips.length);
+    // index loaded
     this.registerView(LIBRARY_VIEW_TYPE, (leaf) => {
       const view = new LibraryView(leaf);
       this.setupLibrary(view);
@@ -17723,18 +18193,27 @@ var HikingJournalPlugin = class extends import_obsidian5.Plugin {
       this.setupTimeline(view);
       return view;
     });
-    this.addRibbonIcon("hiking-journal", "HikerScrolls", () => this.openLibrary());
-    this.addCommand({ id: "open-library", name: "Open Trip Library", callback: () => this.openLibrary() });
-    this.addCommand({ id: "open-timeline", name: "Open Journal Timeline", callback: () => this.activateTimeline() });
-    this.addCommand({ id: "new-journal", name: "New Journal (Wizard)", callback: () => this.openJournalWizard() });
+    this.addRibbonIcon("hiking-journal", _hjT("ribbon.label"), () => this.openLibrary());
+    this.addCommand({ id: "open-library", name: _hjT("cmd.openLibrary"), callback: () => this.openLibrary() });
+    this.addCommand({ id: "open-timeline", name: _hjT("cmd.openTimeline"), callback: () => this.activateTimeline() });
+    this.addCommand({ id: "new-journal", name: _hjT("cmd.newJournal"), callback: () => this.openJournalWizard() });
     this.registerMarkdownCodeBlockProcessor("hiking-map", (source, el, ctx) => {
       this.renderMapBlock(source, el, ctx);
     });
-    // Auto-activate timeline in right sidebar on layout ready
-    this.app.workspace.onLayoutReady(() => this.activateTimeline());
+    // Auto-activate timeline — defer if settings modal is open to avoid closing it
+    this.app.workspace.onLayoutReady(() => this._deferIfSettingsOpen(() => this.activateTimeline()));
   }
   onunload() {
-    this.app.workspace.detachLeavesOfType(TIMELINE_VIEW_TYPE);
+    // Don't detach leaves here — Obsidian handles orphaned view types gracefully.
+    // Detaching during unload causes workspace layout changes that close the settings modal.
+  }
+  // Run fn immediately if settings modal is closed; otherwise wait until it closes
+  _deferIfSettingsOpen(fn) {
+    if (!document.querySelector(".modal-container")) { fn(); return; }
+    const obs = new MutationObserver(() => {
+      if (!document.querySelector(".modal-container")) { obs.disconnect(); fn(); }
+    });
+    obs.observe(document.body, { childList: true, subtree: true });
   }
   // === Refresh all sidebar views after data changes ===
   refreshAllViews() {
@@ -17750,6 +18229,7 @@ var HikingJournalPlugin = class extends import_obsidian5.Plugin {
   async loadSettings() {
     this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
     STADIA_API_KEY = this.settings.stadiaApiKey || "";
+    _hjSetLang(this.settings.language || "auto");
   }
   async saveSettings() {
     await this.saveData(this.settings);
@@ -17780,7 +18260,7 @@ var HikingJournalPlugin = class extends import_obsidian5.Plugin {
   async openTrip(id) {
     const trip = await this.mgr.loadTrip(id);
     if (!trip) {
-      new import_obsidian5.Notice(`Cannot open trip "${id}"`);
+      new import_obsidian5.Notice(_hjT("notice.cannotOpen") + ` "${id}"`);
       return;
     }
     const tripState = { tripId: id };
@@ -17934,8 +18414,12 @@ var HikingJournalPlugin = class extends import_obsidian5.Plugin {
       });
       const popup = document.createElement("div");
       popup.className = "hj-map-popup-content";
-      popup.innerHTML = `<div class="hj-map-popup-name">${trip.name}</div><div class="hj-map-popup-meta">${trip.region ? "<span>\u{1F4CD} " + trip.region + "</span>" : ""}${trip.date ? " <span>\u{1F4C5} " + trip.date + "</span>" : ""}${trip.distanceKm ? " <span>" + trip.distanceKm.toFixed(1) + " km</span>" : ""}</div>`;
-      const openBtn = popup.createEl("button", { text: "Open Journal", cls: "hj-btn-primary hj-btn-sm" });
+      popup.createEl("div", { text: trip.name, cls: "hj-map-popup-name" });
+      const meta = popup.createEl("div", { cls: "hj-map-popup-meta" });
+      if (trip.region) meta.createEl("span", { text: "\u{1F4CD} " + trip.region });
+      if (trip.date) meta.createEl("span", { text: "\u{1F4C5} " + trip.date });
+      if (trip.distanceKm) meta.createEl("span", { text: trip.distanceKm.toFixed(1) + " km" });
+      const openBtn = popup.createEl("button", { text: _hjT("lib.openJournal"), cls: "hj-btn-primary hj-btn-sm" });
       openBtn.addEventListener("click", () => this.openTrip(trip.id));
       marker.bindPopup(popup, { maxWidth: 250, closeButton: true });
       marker.on("click", () => map.flyTo([trip.centerLat, trip.centerLng], 12, { duration: 1.5 }));

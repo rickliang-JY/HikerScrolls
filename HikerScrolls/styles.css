@@ -1792,3 +1792,91 @@ svg.leaflet-image-layer.leaflet-interactive path {
   color: var(--text-normal);
 }
 
+/* ================================================
+   Community Guidelines: Extracted Inline Styles
+   ================================================ */
+
+/* AI Bubble Overlay */
+.hj-bubble-overlay { position: absolute; z-index: 200; pointer-events: auto; min-width: 230px; max-width: 290px; }
+.hj-bubble-inner { position: relative; padding: 12px 14px 14px; }
+.hj-bubble-close { position: absolute; top: 6px; right: 8px; background: none; border: none; font-size: 18px; line-height: 1; cursor: pointer; color: #9ca3af; padding: 0; }
+.hj-bubble-title { padding-right: 20px; }
+.hj-bubble-coords { font-size: 10px; color: #94a3b8; font-family: monospace; margin-bottom: 7px; }
+.hj-bubble-body { font-size: 12px; line-height: 1.6; color: #334155; }
+.hj-bubble-body-muted { color: #94a3b8; font-style: italic; }
+.theme-dark .hj-bubble-body { color: #cbd5e1; }
+.theme-dark .hj-bubble-body-muted { color: #64748b; }
+
+/* AI Result Styles */
+.hj-ai-hint { color: var(--text-muted); font-style: italic; }
+.hj-ai-error { color: #dc2626; }
+.hj-ai-category { color: var(--text-normal); }
+.hj-ai-highlights { color: #64748b; font-size: 10px; }
+
+/* Settings */
+.hj-settings-motto { font-style: italic; opacity: 0.7; margin-top: -8px; margin-bottom: 16px; }
+
+/* Step 1: Date Fields */
+.hj-date-cols { display: flex; gap: 12px; }
+.hj-date-col { flex: 1; }
+
+/* Step 2: Mode Selector */
+.hj-mode-row { display: flex; gap: 8px; align-items: center; margin-bottom: 12px; padding: 10px; background: var(--background-secondary); border-radius: 8px; flex-wrap: wrap; }
+.hj-mode-warn { color: var(--text-warning); font-size: 12px; }
+
+/* Step 2: Manual Map */
+.hj-manual-map-wrap { height: 400px; margin-bottom: 12px; border-radius: 8px; overflow: hidden; border: 1px solid var(--background-modifier-border); }
+
+/* Step 2: AI Upload */
+.hj-ai-upload-section { border: 2px dashed var(--background-modifier-border); border-radius: 8px; padding: 16px; margin-bottom: 12px; }
+.hj-ai-photo-count { margin-top: 8px; font-size: 13px; color: var(--text-muted); }
+.hj-analyze-row { display: flex; gap: 8px; align-items: center; margin-bottom: 16px; flex-wrap: wrap; }
+.hj-analyze-status { font-size: 13px; color: var(--text-muted); }
+.hj-cluster-label { font-size: 12px; color: var(--text-muted); display: flex; align-items: center; gap: 4px; white-space: nowrap; }
+.hj-cluster-input { width: 60px; padding: 2px 4px; border-radius: 4px; border: 1px solid var(--background-modifier-border); font-size: 12px; }
+.hj-cluster-bar { display: flex; gap: 6px; align-items: center; margin-bottom: 10px; flex-wrap: wrap; }
+.hj-cluster-unit { font-size: 12px; color: var(--text-muted); }
+.hj-cluster-info { font-size: 12px; color: var(--text-muted); margin-left: 4px; }
+.hj-cluster-sep { color: var(--background-modifier-border); font-size: 14px; }
+
+/* Step 2: AI Split Layout */
+.hj-ai-split { display: flex; gap: 12px; align-items: flex-start; }
+.hj-ai-map-col { flex: 1; min-width: 0; }
+.hj-ai-map-wrap { height: 380px; border-radius: 8px; overflow: hidden; border: 1px solid var(--background-modifier-border); }
+
+/* Step 2: AI Location List */
+.hj-ai-list-col { flex: 1; min-width: 0; max-height: 380px; overflow-y: auto; }
+.hj-ai-loc-item { display: flex; flex-wrap: wrap; gap: 6px; align-items: center; padding: 8px; margin-bottom: 6px; background: var(--background-secondary); border-radius: 6px; }
+.hj-ai-loc-cb { flex-shrink: 0; width: 15px; height: 15px; cursor: pointer; accent-color: #3b82f6; }
+.hj-ai-badge { color: #fff; font-size: 11px; padding: 2px 6px; border-radius: 10px; white-space: nowrap; flex-shrink: 0; }
+.hj-ai-loc-title { flex: 1; min-width: 80px; }
+.hj-ai-coord-row { display: flex; gap: 4px; align-items: center; width: 100%; }
+.hj-ai-coord-input { flex: 1; min-width: 0; }
+.hj-ai-coord-sm { width: 88px; }
+.hj-ai-info-el { width: 100%; font-size: 12px; color: var(--text-muted); padding: 6px 0 2px 0; border-top: 1px solid var(--background-modifier-border); margin-top: 4px; }
+.hj-ai-add-btn { margin-top: 6px; }
+
+/* Step 3: Photo Assignment */
+.hj-step3-map { height: 260px; margin-bottom: 0; border-radius: 8px 8px 0 0; overflow: hidden; border: 1px solid var(--background-modifier-border); border-bottom: none; }
+.hj-step3-rows { border: 1px solid var(--background-modifier-border); border-radius: 0 0 8px 8px; overflow: hidden; margin-bottom: 12px; max-height: 380px; overflow-y: auto; }
+.hj-step3-row { display: flex; align-items: stretch; border-bottom: 1px solid var(--background-modifier-border); }
+.hj-step3-row-last { border-bottom: none; }
+.hj-step3-row-sel { background: #eff6ff; }
+.hj-step3-name { width: 160px; flex-shrink: 0; padding: 10px 12px; cursor: pointer; border-right: 1px solid var(--background-modifier-border); display: flex; flex-direction: column; justify-content: center; gap: 3px; }
+.hj-step3-name-sel { font-weight: 600; color: #2563eb; }
+.hj-step3-pool { flex: 1; min-height: 88px; padding: 8px; display: flex; flex-wrap: wrap; gap: 6px; align-content: flex-start; }
+.hj-step3-photo-card { position: relative; width: 72px; height: 72px; border-radius: 6px; overflow: hidden; cursor: grab; flex-shrink: 0; box-shadow: 0 1px 3px rgba(0,0,0,0.15); }
+.hj-step3-photo-img { width: 100%; height: 100%; object-fit: cover; pointer-events: none; }
+.hj-photo-remove-btn { position: absolute; top: 2px; right: 2px; background: rgba(0,0,0,0.55); color: #fff; border: none; border-radius: 50%; width: 18px; height: 18px; font-size: 12px; cursor: pointer; line-height: 1; padding: 0; display: flex; align-items: center; justify-content: center; }
+
+/* Dark theme overrides */
+.theme-dark .hj-step3-row-sel { background: #1e293b; }
+.theme-dark .hj-step3-name-sel { color: #60a5fa; }
+.theme-dark .hj-ai-loc-item { background: #1e293b; }
+.hj-ai-loc-highlight { outline: 2px solid #3b82f6; box-shadow: 0 0 0 3px rgba(59,130,246,0.2); }
+
+/* Hover Popup (map pin hover) */
+.hj-hover-popup-title { font-weight: 600; margin-bottom: 5px; font-size: 12px; }
+.hj-hover-popup-thumbs { display: flex; gap: 3px; flex-wrap: wrap; }
+.hj-hover-popup-img { width: 54px; height: 54px; object-fit: cover; border-radius: 4px; }
+
