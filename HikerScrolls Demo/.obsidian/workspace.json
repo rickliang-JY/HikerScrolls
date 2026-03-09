@@ -4,11 +4,11 @@
     "type": "split",
     "children": [
       {
-        "id": "8332b2878935bc44",
+        "id": "4d554acacf43e62a",
         "type": "tabs",
         "children": [
           {
-            "id": "500486ca03a440f0",
+            "id": "2697b6bce8c5c7e5",
             "type": "leaf",
             "state": {
               "type": "hiking-journal-library",
@@ -74,8 +74,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "right": {
     "id": "7c62ab0e619e3c02",
@@ -160,7 +159,7 @@
             }
           },
           {
-            "id": "fca9a105becc08fd",
+            "id": "9e9d436d54f492e7",
             "type": "leaf",
             "state": {
               "type": "hiking-journal-timeline",
@@ -174,8 +173,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300,
-    "collapsed": true
+    "width": 300
   },
   "left-ribbon": {
     "hiddenItems": {
@@ -189,8 +187,28 @@
       "hiker-scrolls:HikerScrolls": false
     }
   },
-  "active": "500486ca03a440f0",
+  "active": "2697b6bce8c5c7e5",
   "lastOpenFiles": [
+    "hiking-journal/index.json",
+    "hiking-journal/chicago/chicago.md",
+    "hiking-journal/chicago/chicago lakeview and downtown.gpx",
+    "hiking-journal/chicago/photos/IMG20260308165452.jpg",
+    "hiking-journal/chicago/photos/IMG20260308163019.jpg",
+    "hiking-journal/chicago/photos/IMG20260308162956.jpg",
+    "hiking-journal/chicago/photos/IMG20260308162137.jpg",
+    "hiking-journal/chicago/photos/IMG20260308162136.jpg",
+    "hiking-journal/chicago/photos/IMG20260308161915.jpg",
+    "hiking-journal/chicago/photos/IMG20260308161549.jpg",
+    "hiking-journal/chicago/photos/IMG20260308161545.jpg",
+    "hiking-journal/chicago/photos/IMG20260308161015.jpg",
+    "hiking-journal/chicago/photos/IMG20260308154748.jpg",
+    "hiking-journal/chicago/photos",
+    "hiking-journal/chicago",
+    "hiking-journal",
+    "hiking-journal/miami/miami.md",
+    "hiking-journal/miami/chicago lakeview and downtown.gpx",
+    "hiking-journal/miami/photos",
+    "hiking-journal/miami",
     "欢迎.md"
   ]
 }

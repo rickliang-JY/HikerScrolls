@@ -10527,7 +10527,7 @@ function generateJournalMarkdownV4(config, routes, locations) {
     elevation_loss: r.stats?.elevationLossM || 0,
     sortOrder: r.sortOrder || 0
   }));
-  lines.push(`routes_json: '${JSON.stringify(routesMeta)}'`);
+  lines.push(`routes_json: '${JSON.stringify(routesMeta).replace(/'/g, "''")}'`);
   // Aggregate stats
   const totalDist = routes.reduce((s, r) => s + (r.stats?.distanceKm || 0), 0);
   const totalGain = routes.reduce((s, r) => s + (r.stats?.elevationGainM || 0), 0);
@@ -10606,7 +10606,7 @@ function generateJournalMarkdownV5(config, routes, locations, sections) {
     elevation_loss: r.stats?.elevationLossM || 0,
     sortOrder: r.sortOrder || 0
   }));
-  lines.push(`routes_json: '${JSON.stringify(routesMeta)}'`);
+  lines.push(`routes_json: '${JSON.stringify(routesMeta).replace(/'/g, "''")}'`);
   // NEW: Locations in frontmatter — GPS data safe from body edits
   const locsMeta = locations.map((loc) => ({
     id: loc.id,
@@ -10624,7 +10624,7 @@ function generateJournalMarkdownV5(config, routes, locations, sections) {
     })),
     sort: loc.sortOrder || 0
   }));
-  lines.push(`locations_json: '${JSON.stringify(locsMeta)}'`);
+  lines.push(`locations_json: '${JSON.stringify(locsMeta).replace(/'/g, "''")}'`);
   // Aggregate stats
   const totalDist = routes.reduce((s, r) => s + (r.stats?.distanceKm || 0), 0);
   const totalGain = routes.reduce((s, r) => s + (r.stats?.elevationGainM || 0), 0);
@@ -11841,10 +11841,10 @@ var LibraryView = class extends import_obsidian2.ItemView {
       if (!content.includes("type: hiking-journal"))
         continue;
       // V4: Check for routes_json first (multi-GPX)
-      const routesJsonMatch = content.match(/^routes_json:\s*'([^']+)'/m);
+      const routesJsonMatch = content.match(/^routes_json:\s*'((?:[^']|'')+)'/m);
       if (routesJsonMatch) {
         try {
-          const routes = JSON.parse(routesJsonMatch[1]);
+          const routes = JSON.parse(routesJsonMatch[1].replace(/''/g, "'"));
           let colorIdx = 0;
           for (const route of routes) {
             if (!route.gpx) continue;
@@ -13123,8 +13123,10 @@ var TripView = class extends import_obsidian3.ItemView {
       if (this.hasTrack) {
         const d1 = this.pts[fi].trackDist;
         const d2 = fi < this.pts.length - 1 ? this.pts[fi + 1].trackDist : this.totalDist;
-        targetDist = d1 + (d2 - d1) * fp;
-        const tip = interpAt(targetDist, this.route, this.routeDists);
+        const tipDist = d1 + (d2 - d1) * fp;
+        // Route line: first segment fills from START (0), others fill normally
+        targetDist = fi === 0 ? fp * d1 : tipDist;
+        const tip = interpAt(tipDist, this.route, this.routeDists);
         tipX = tip.x;
         tipY = tip.y;
       } else {
@@ -13145,8 +13147,12 @@ var TripView = class extends import_obsidian3.ItemView {
         if (Math.abs(this.userOffY) < 0.5)
           this.userOffY = 0;
       }
-      this.cx += (tcx - this.cx) * 0.18;
-      this.cy += (tcy - this.cy) * 0.18;
+      // Adaptive lerp: fast catch-up when camera is far behind, smooth when close
+      const camDx = tcx - this.cx, camDy = tcy - this.cy;
+      const camGap = Math.sqrt(camDx * camDx + camDy * camDy);
+      const lerp = camGap > TILE * 3 ? 0.5 : camGap > TILE ? 0.3 : 0.18;
+      this.cx += camDx * lerp;
+      this.cy += camDy * lerp;
       this.mGrp?.setAttribute("transform", `translate(${this.cx},${this.cy})`);
       // Only sync tiles when camera has moved enough (> 1 tile worth)
       if (Math.abs(this.cx - this._lastTileCx) > TILE / 2 || Math.abs(this.cy - this._lastTileCy) > TILE / 2) {
@@ -13246,8 +13252,12 @@ var TripView = class extends import_obsidian3.ItemView {
     }
     // Tip = map dot position (already smoothed by camera lerp)
     const tx = tipX + this.cx, ty = tipY + this.cy;
-    // Scroll viewport for scroll-based transition
-    const scrollRect = this.scrollEl.getBoundingClientRect();
+    // Cache scrollRect — only changes on resize, not every frame
+    if (!this._scrollRect || this._scrollRectAge++ > 30) {
+      this._scrollRect = this.scrollEl.getBoundingClientRect();
+      this._scrollRectAge = 0;
+    }
+    const scrollRect = this._scrollRect;
     const scrollH = scrollRect.height;
     for (let i2 = 0; i2 < wraps.length; i2++) {
       const ir = wraps[i2].getBoundingClientRect();
@@ -16535,76 +16545,81 @@ var JournalWizard = class extends import_obsidian4.Modal {
     const el = this.contentEl;
     el.createEl("h2", { text: "Step 4: Blog Sections" });
     el.createEl("p", {
-      text: "Create sections for your blog, then assign locations (with their photos) into each section.",
+      text: "Create sections for your blog, then check locations to assign them. Locations are listed in route order.",
       cls: "hj-wizard-hint"
     });
-    // Auto-initialize sections on first entry
-    if (this.sections.length === 0) {
-      const routeIds = this.tracks.length > 0
-        ? this.tracks.map((t) => t.id)
-        : ["default"];
-      for (const routeId of routeIds) {
-        const routeLocs = this.locations.filter((l) => (l.routeId || "default") === routeId);
-        if (routeLocs.length > 0) {
-          const sec = {
-            id: `sec-${++this.sectionCounter}`,
-            routeId,
-            title: "Section 1",
-            locationIds: routeLocs.map((l) => l.id),
-            text: ""
-          };
-          this.sections.push(sec);
+    // Cache blob URLs so we don't recreate them on every render
+    if (!this._thumbCache) this._thumbCache = new Map();
+    const getThumbUrl = (photoId) => {
+      if (this._thumbCache.has(photoId)) return this._thumbCache.get(photoId);
+      const buf = this.photoBuffers.get(photoId);
+      if (!buf) return null;
+      const url = URL.createObjectURL(new Blob([buf]));
+      this._thumbCache.set(photoId, url);
+      return url;
+    };
+    // Pre-compute route locations (sorted) once
+    const routeGroups = new Map();
+    for (const track of this.tracks) {
+      routeGroups.set(track.id, { name: track.name || track.fileName, track });
+    }
+    if (this.tracks.length === 0) {
+      routeGroups.set("default", { name: this.config.name, track: null });
+    }
+    const routeLocsMap = new Map();
+    for (const [routeId] of routeGroups) {
+      routeLocsMap.set(routeId, this.locations
+        .filter((l) => (l.routeId || "default") === routeId)
+        .sort((a, b) => (a.sortOrder || 0) - (b.sortOrder || 0)));
+    }
+    // Track all checkbox/row refs so we can update states without re-rendering
+    // Key: `${secId}:${locId}` → { cb, row }
+    let cbRefs = new Map();
+    const updateCheckboxStates = () => {
+      // For each route, build set of assigned loc IDs per section
+      for (const [routeId] of routeGroups) {
+        const routeSections = this.sections.filter((s) => s.routeId === routeId);
+        const assignedBySec = new Map();
+        const allAssigned = new Set();
+        for (const sec of routeSections) {
+          assignedBySec.set(sec.id, new Set(sec.locationIds));
+          for (const lid of sec.locationIds) allAssigned.add(lid);
+        }
+        const routeLocs = routeLocsMap.get(routeId) || [];
+        for (const sec of routeSections) {
+          const myIds = assignedBySec.get(sec.id);
+          for (const loc of routeLocs) {
+            const ref = cbRefs.get(`${sec.id}:${loc.id}`);
+            if (!ref) continue;
+            const isChecked = myIds.has(loc.id);
+            const isInOther = !isChecked && allAssigned.has(loc.id);
+            ref.cb.checked = isChecked;
+            ref.cb.disabled = isInOther;
+            ref.row.style.opacity = isInOther ? "0.45" : "";
+          }
         }
       }
-    }
+    };
     const structureEl = el.createDiv({ cls: "hj-blog-structure" });
     const renderStructure = () => {
       structureEl.empty();
-      // Build route groups
-      const routeGroups = new Map();
-      for (const track of this.tracks) {
-        routeGroups.set(track.id, { name: track.name || track.fileName });
-      }
-      if (this.tracks.length === 0) {
-        routeGroups.set("default", { name: this.config.name });
-      }
+      cbRefs = new Map();
       for (const [routeId, group] of routeGroups) {
         const routeBlock = structureEl.createDiv({ cls: "hj-route-block" });
-        // Route header
         const routeHeader = routeBlock.createDiv({ cls: "hj-route-header" });
         routeHeader.createEl("span", { text: "##", cls: "hj-section-level" });
-        const track = this.tracks.find((t) => t.id === routeId);
         const routeTitleIn = routeHeader.createEl("input", {
           type: "text", cls: "hj-section-title-input",
           value: group.name, placeholder: "Route / Day name"
         });
         routeTitleIn.addEventListener("input", () => {
-          if (track) track.name = routeTitleIn.value;
+          if (group.track) group.track.name = routeTitleIn.value;
           group.name = routeTitleIn.value;
         });
-        // Unassigned locations pool for this route
-        const allAssignedIds = new Set();
-        for (const sec of this.sections) {
-          if (sec.routeId === routeId) {
-            for (const lid of sec.locationIds) allAssignedIds.add(lid);
-          }
-        }
-        const routeLocs = this.locations.filter((l) => (l.routeId || "default") === routeId);
-        const unassigned = routeLocs.filter((l) => !allAssignedIds.has(l.id));
-        if (unassigned.length > 0) {
-          const poolEl = routeBlock.createDiv({ cls: "hj-loc-pool" });
-          poolEl.createEl("div", { text: "Unassigned Locations:", cls: "hj-pool-label" });
-          const poolList = poolEl.createDiv({ cls: "hj-pool-list" });
-          for (const loc of unassigned) {
-            const chip = poolList.createDiv({ cls: "hj-loc-chip" });
-            chip.createEl("span", { text: `${loc.title} (${loc.photos.length} photos)` });
-          }
-        }
-        // Sections for this route
+        const routeLocs = routeLocsMap.get(routeId) || [];
         const routeSections = this.sections.filter((s) => s.routeId === routeId);
         for (const sec of routeSections) {
           const secBlock = routeBlock.createDiv({ cls: "hj-section-block" });
-          // Section header: title input + delete button
           const secHeader = secBlock.createDiv({ cls: "hj-section-header" });
           secHeader.createEl("span", { text: "###", cls: "hj-section-level" });
           const secTitleIn = secHeader.createEl("input", {
@@ -16617,55 +16632,31 @@ var JournalWizard = class extends import_obsidian4.Modal {
             this.sections = this.sections.filter((s) => s.id !== sec.id);
             renderStructure();
           });
-          // Assigned locations in this section
-          if (sec.locationIds.length > 0) {
-            const assignedEl = secBlock.createDiv({ cls: "hj-assigned-locs" });
-            for (const locId of sec.locationIds) {
-              const loc = this.locations.find((l) => l.id === locId);
-              if (!loc) continue;
-              const locCard = assignedEl.createDiv({ cls: "hj-assigned-loc-card" });
-              // Photo thumbnails
-              if (loc.photos.length > 0) {
-                const thumbRow = locCard.createDiv({ cls: "hj-loc-photo-preview" });
-                for (const photoRef of loc.photos.slice(0, 4)) {
-                  const photo = this.photos.get(photoRef.id);
-                  const buf = photo ? this.photoBuffers.get(photo.id) : null;
-                  if (buf) {
-                    const blob = new Blob([buf]);
-                    const img = thumbRow.createEl("img", { cls: "hj-blog-thumb" });
-                    img.src = URL.createObjectURL(blob);
-                    img.addEventListener("load", () => URL.revokeObjectURL(img.src));
-                  } else if (photo && photo.imageUrl) {
-                    const img = thumbRow.createEl("img", { cls: "hj-blog-thumb" });
-                    img.src = photo.imageUrl;
-                  }
-                }
-                if (loc.photos.length > 4) {
-                  thumbRow.createEl("span", { text: `+${loc.photos.length - 4}`, cls: "hj-thumb-more" });
-                }
+          // Checkbox list — built once, updated via updateCheckboxStates
+          const locListEl = secBlock.createDiv({ cls: "hj-loc-checklist" });
+          for (const loc of routeLocs) {
+            const locRow = locListEl.createDiv({ cls: "hj-loc-check-row" });
+            const cb = locRow.createEl("input", { type: "checkbox", cls: "hj-loc-checkbox" });
+            cbRefs.set(`${sec.id}:${loc.id}`, { cb, row: locRow });
+            cb.addEventListener("change", () => {
+              if (cb.checked) {
+                if (!sec.locationIds.includes(loc.id)) sec.locationIds.push(loc.id);
+              } else {
+                sec.locationIds = sec.locationIds.filter((id) => id !== loc.id);
               }
-              locCard.createEl("span", { text: loc.title, cls: "hj-assigned-loc-name" });
-              const unassignBtn = locCard.createEl("button", { text: "\u2715", cls: "hj-btn-icon-sm", attr: { title: "Remove from section" } });
-              unassignBtn.addEventListener("click", () => {
-                sec.locationIds = sec.locationIds.filter((id) => id !== locId);
-                renderStructure();
-              });
-            }
-          }
-          // Dropdown to assign unassigned locations
-          if (unassigned.length > 0) {
-            const assignRow = secBlock.createDiv({ cls: "hj-assign-row" });
-            const select = assignRow.createEl("select", { cls: "hj-assign-select" });
-            select.createEl("option", { text: "+ Assign location...", value: "" });
-            for (const loc of unassigned) {
-              select.createEl("option", { text: `${loc.title} (${loc.photos.length} photos)`, value: loc.id });
-            }
-            select.addEventListener("change", () => {
-              if (select.value) {
-                sec.locationIds.push(select.value);
-                renderStructure();
-              }
+              updateCheckboxStates();
             });
+            // Single thumbnail (cached)
+            if (loc.photos.length > 0) {
+              const firstPhoto = this.photos.get(loc.photos[0].id);
+              const thumbUrl = firstPhoto ? getThumbUrl(firstPhoto.id) : (firstPhoto?.imageUrl || null);
+              if (thumbUrl) {
+                const img = locRow.createEl("img", { cls: "hj-blog-thumb" });
+                img.src = thumbUrl;
+              }
+            }
+            locRow.createEl("span", { cls: "hj-loc-check-name", text: loc.title });
+            locRow.createEl("span", { cls: "hj-loc-check-count", text: `${loc.photos.length}` });
           }
           // Blog text area
           const blogArea = secBlock.createEl("textarea", {
@@ -16673,10 +16664,9 @@ var JournalWizard = class extends import_obsidian4.Modal {
             placeholder: "Write your story for this section..."
           });
           blogArea.value = sec.text || "";
-          blogArea.rows = 4;
+          blogArea.rows = 3;
           blogArea.addEventListener("input", () => { sec.text = blogArea.value; });
         }
-        // Add section button
         const addSecBtn = routeBlock.createEl("button", { text: "+ Add Section", cls: "hj-btn-sm hj-add-section-btn" });
         addSecBtn.addEventListener("click", () => {
           this.sections.push({
@@ -16689,6 +16679,7 @@ var JournalWizard = class extends import_obsidian4.Modal {
           renderStructure();
         });
       }
+      updateCheckboxStates();
     };
     renderStructure();
     this.renderFooter(el, {
@@ -17656,14 +17647,17 @@ var HJSettingTab = class extends import_obsidian5.PluginSettingTab {
     new import_obsidian5.Setting(containerEl)
       .setName("Stadia Maps API Key")
       .setDesc("Free API key from stadiamaps.com — required for Stamen Toner / Watercolor tiles. Leave empty to disable those map styles.")
-      .addText((text) => text
-        .setPlaceholder("Enter your API key")
-        .setValue(this.plugin.settings.stadiaApiKey)
-        .onChange(async (value) => {
-          this.plugin.settings.stadiaApiKey = value.trim();
-          STADIA_API_KEY = this.plugin.settings.stadiaApiKey;
-          await this.plugin.saveSettings();
-        }));
+      .addText((text) => {
+        text.inputEl.type = "password";
+        text
+          .setPlaceholder("Enter your API key")
+          .setValue(this.plugin.settings.stadiaApiKey)
+          .onChange(async (value) => {
+            this.plugin.settings.stadiaApiKey = value.trim();
+            STADIA_API_KEY = this.plugin.settings.stadiaApiKey;
+            await this.plugin.saveSettings();
+          });
+      });
     containerEl.createEl("h3", { text: "AI Features (Gemini)" });
     new import_obsidian5.Setting(containerEl)
       .setName("Gemini API Key")
@@ -17742,6 +17736,17 @@ var HikingJournalPlugin = class extends import_obsidian5.Plugin {
   onunload() {
     this.app.workspace.detachLeavesOfType(TIMELINE_VIEW_TYPE);
   }
+  // === Refresh all sidebar views after data changes ===
+  refreshAllViews() {
+    // Refresh Library (atlas) view
+    for (const leaf of this.app.workspace.getLeavesOfType(LIBRARY_VIEW_TYPE)) {
+      if (leaf.view) this.setupLibrary(leaf.view);
+    }
+    // Refresh Timeline (sidebar) view
+    for (const leaf of this.app.workspace.getLeavesOfType(TIMELINE_VIEW_TYPE)) {
+      if (leaf.view) this.setupTimeline(leaf.view);
+    }
+  }
   async loadSettings() {
     this.settings = Object.assign({}, DEFAULT_SETTINGS, await this.loadData());
     STADIA_API_KEY = this.settings.stadiaApiKey || "";
@@ -17807,6 +17812,7 @@ var HikingJournalPlugin = class extends import_obsidian5.Plugin {
   openJournalWizard() {
     new JournalWizard(this.app, this.mgr, async (journalPath) => {
       await this.mgr.loadIndex();
+      this.refreshAllViews();
       const parts = journalPath.split("/");
       if (parts.length >= 2)
         await this.openTrip(parts[parts.length - 2]);
@@ -17818,7 +17824,7 @@ var HikingJournalPlugin = class extends import_obsidian5.Plugin {
       settings: this.settings,
       onOpenTrip: (id) => this.openTrip(id),
       onInitJournal: () => this.openJournalWizard(),
-      onDeleteTrip: (id) => this.mgr.deleteTrip(id),
+      onDeleteTrip: async (id) => { await this.mgr.deleteTrip(id); this.refreshAllViews(); },
       onAddRoute: (id) => this.openAddRouteWizard(id)
     });
     view.render();
@@ -17865,6 +17871,7 @@ var HikingJournalPlugin = class extends import_obsidian5.Plugin {
   openAddRouteWizard(tripId) {
     new AddRouteWizard(this.app, this.mgr, tripId, async () => {
       await this.mgr.loadIndex();
+      this.refreshAllViews();
       await this.openTrip(tripId);
     }, this.settings).open();
   }
@@ -17952,9 +17959,9 @@ var HikingJournalPlugin = class extends import_obsidian5.Plugin {
           for (const md of mdFiles) {
             const content = await this.app.vault.read(md);
             if (!content.includes("type: hiking-journal")) continue;
-            const routesJsonMatch = content.match(/^routes_json:\s*'([^']+)'/m);
+            const routesJsonMatch = content.match(/^routes_json:\s*'((?:[^']|'')+)'/m);
             if (routesJsonMatch) {
-              const routes = JSON.parse(routesJsonMatch[1]);
+              const routes = JSON.parse(routesJsonMatch[1].replace(/''/g, "'"));
               let ci = 0;
               for (const route of routes) {
                 if (!route.gpx) continue;

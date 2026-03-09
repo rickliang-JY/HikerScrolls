@@ -181,8 +181,8 @@
 @keyframes hj-fadein { 0%{opacity:0;transform:translateY(10px) scale(0.95)} 100%{opacity:1;transform:translateY(0) scale(1)} }
 
 /* === SHARED UI === */
-.hj-btn-primary { background: #dc2626; color: #fff !important; border: none; border-radius: 6px; padding: 8px 18px; font-weight: 500; cursor: pointer; font-size: 0.85rem; transition: background 0.15s; }
-.hj-btn-primary:hover { background: #b91c1c; }
+.hj-btn-primary { background: #dc2626 !important; color: #fff !important; border: none !important; border-radius: 6px; padding: 8px 18px; font-weight: 500; cursor: pointer; font-size: 0.85rem; transition: background 0.15s; }
+.hj-btn-primary:hover { background: #b91c1c !important; }
 .hj-btn-secondary { background: var(--background-primary); color: var(--text-normal); border: 1px solid var(--background-modifier-border); border-radius: 6px; padding: 8px 18px; font-weight: 500; cursor: pointer; font-size: 0.85rem; }
 .hj-btn-secondary:hover { background: var(--background-secondary); }
 .hj-btn-sm { padding: 5px 14px; font-size: 0.78rem; }
@@ -1517,10 +1517,48 @@ svg.leaflet-image-layer.leaflet-interactive path {
 .hj-add-section-btn {
   margin-top: 8px;
 }
+.hj-loc-checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  margin: 8px 0;
+  max-height: 280px;
+  overflow-y: auto;
+}
+.hj-loc-check-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 8px;
+  border-radius: 5px;
+  transition: background 0.15s;
+}
+.hj-loc-check-row:hover { background: var(--background-secondary); }
+.hj-loc-checkbox {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+  accent-color: #2563eb;
+}
+.hj-loc-check-name {
+  flex: 1;
+  font-size: 0.85rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.hj-loc-check-count {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
 .theme-dark .hj-section-block { background: #0f172a; border-color: rgba(255,255,255,0.06); }
 .theme-dark .hj-loc-pool { background: #1a2332; border-color: rgba(255,255,255,0.08); }
 .theme-dark .hj-assigned-loc-card { background: #1e293b; border-color: rgba(255,255,255,0.06); }
 .theme-dark .hj-assign-select { background: #0f172a; border-color: rgba(255,255,255,0.1); color: #f1f5f9; }
+.theme-dark .hj-loc-check-row:hover { background: #1e293b; }
 
 /* Photo grid in step 3 */
 .hj-photo-grid {
