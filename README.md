@@ -164,7 +164,7 @@ The scrollytelling design of HikerScrolls is inspired by [Koya Bound](https://wa
 
 ## Built With
 
-[Obsidian Plugin API](https://docs.obsidian.md/) · [Leaflet.js](https://leafletjs.com/) · [Google Gemini](https://aistudio.google.com/) · [OpenStreetMap](https://www.openstreetmap.org/) · [Nominatim](https://nominatim.org/)
+[Obsidian Plugin API](https://docs.obsidian.md/) · [Leaflet.js](https://leafletjs.com/) · [Google Gemini](https://aistudio.google.com/) · [OpenStreetMap](https://www.openstreetmap.org/) · [Nominatim](https://nominatim.org/) · [Claude Code](https://claude.ai/claude-code)
 
 ## License
 

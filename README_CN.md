@@ -156,7 +156,7 @@ HikerScrolls 的滚动叙事设计受到 Craig Mod 的 [Koya Bound](https://walk
 
 ## 构建技术
 
-[Obsidian Plugin API](https://docs.obsidian.md/) · [Leaflet.js](https://leafletjs.com/) · [Google Gemini](https://aistudio.google.com/) · [OpenStreetMap](https://www.openstreetmap.org/) · [Nominatim](https://nominatim.org/)
+[Obsidian Plugin API](https://docs.obsidian.md/) · [Leaflet.js](https://leafletjs.com/) · [Google Gemini](https://aistudio.google.com/) · [OpenStreetMap](https://www.openstreetmap.org/) · [Nominatim](https://nominatim.org/) · [Claude Code](https://claude.ai/claude-code)
 
 ## 许可证
 
