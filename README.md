@@ -10,8 +10,6 @@ A scrollytelling journal for [Obsidian](https://obsidian.md) that transforms you
 
 **English** · [中文](README_CN.md)
 
-[Get Started](#-get-started) · [Features](#-what-you-can-do) · [Map Styles](#-map-styles) · [AI](#-ai-powered)
-
 [Watch Demo](https://drive.google.com/file/d/1-b8XhaBnnYo2QnIIICglMP4YOKFS8RlG/view?usp=drive_link)
 
 </div>
