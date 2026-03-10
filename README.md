@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="icon-preview.svg" alt="HikerScrolls" width="80" height="80">
+
 # HikerScrolls
 
 ### Where trail stories meet living maps.

@@ -1,5 +1,7 @@
 <div align="center">
 
+<img src="icon-preview.svg" alt="HikerScrolls" width="80" height="80">
+
 # HikerScrolls
 
 ### 让足迹与故事同行
