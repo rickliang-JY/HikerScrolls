@@ -124,7 +124,7 @@
 |------|------|
 | **Stadia Maps API Key** | 解锁 Stamen/Stadia 地图风格。在 [stadiamaps.com](https://stadiamaps.com/) 获取（有免费额度） |
 | **Gemini API Key** | 启用 AI 功能。在 [aistudio.google.com](https://aistudio.google.com/) 获取（有免费额度） |
-| **Gemini Model** | 使用的模型（默认：`gemini-2.0-flash`） |
+| **Gemini Model** | 推荐使用的模型：`gemini-3.1-flash-lite-preview` |
 
 ---
 

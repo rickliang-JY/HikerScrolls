@@ -134,7 +134,7 @@ In **Settings -> HikerScrolls**:
 |---------|-----|
 | **Stadia Maps API Key** | Unlocks Stamen/Stadia map styles. Get one at [stadiamaps.com](https://stadiamaps.com/) (free tier available) |
 | **Gemini API Key** | Enables AI features. Get one at [aistudio.google.com](https://aistudio.google.com/) (free tier available) |
-| **Gemini Model** | Which model to use (default: `gemini-2.0-flash`) |
+| **Gemini Model** | Recommended: `gemini-3.1-flash-lite-preview` |
 
 ---
 
