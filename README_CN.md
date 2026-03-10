@@ -10,6 +10,8 @@
 
 [English](README.md) · **中文**
 
+[观看演示](https://drive.google.com/file/d/1-b8XhaBnnYo2QnIIICglMP4YOKFS8RlG/view?usp=drive_link)
+
 </div>
 
 ---
