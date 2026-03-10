@@ -91,7 +91,7 @@ Choose from **14 map styles** to match the mood of each trip:
 | **Esri World Topo** | Detailed topographic reference |
 | **Antique Map** | Watercolor + sepia — old explorer vibes |
 
-> Stamen and Stadia styles require a free API key from [stadiamaps.com](https://stadiamaps.com/).
+> Stamen and Stadia styles require an API key from [stadiamaps.com](https://stadiamaps.com/) (free tier available).
 
 ---
 

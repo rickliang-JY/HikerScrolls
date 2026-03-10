@@ -81,7 +81,7 @@
 | **Esri World Topo** | 详细地形参考 |
 | **Antique Map** | 水彩 + 复古 — 老探险家风格 |
 
-> Stamen 和 Stadia 风格需要 [stadiamaps.com](https://stadiamaps.com/) 的免费 API 密钥。
+> Stamen 和 Stadia 风格需要 [stadiamaps.com](https://stadiamaps.com/) 的 API 密钥（有免费额度）。
 
 ---
 
