@@ -119,14 +119,21 @@ HikerScrolls integrates with **Google Gemini** to help you build journals faster
 3. Drop the files in
 4. Restart Obsidian -> **Settings -> Community Plugins -> Enable HikerScrolls**
 
+### Get a GPX File
+
+Don't have a GPX file yet? Here are two great options:
+
+- **[Geo Tracker](https://play.google.com/store/apps/details?id=com.ilyabogdanovich.geotracker)** — Record your route in real time on your phone
+- **[gpx.studio](https://gpx.studio/)** — Create and edit GPX tracks online in your browser
+
 ### Configure (optional)
 
 In **Settings -> HikerScrolls**:
 
 | Setting | Why |
 |---------|-----|
-| **Stadia Maps API Key** | Unlocks Stamen/Stadia map styles. Free at [stadiamaps.com](https://stadiamaps.com/) |
-| **Gemini API Key** | Enables AI features. Free at [aistudio.google.com](https://aistudio.google.com/) |
+| **Stadia Maps API Key** | Unlocks Stamen/Stadia map styles. Get one at [stadiamaps.com](https://stadiamaps.com/) (free tier available) |
+| **Gemini API Key** | Enables AI features. Get one at [aistudio.google.com](https://aistudio.google.com/) (free tier available) |
 | **Gemini Model** | Which model to use (default: `gemini-2.0-flash`) |
 
 ---

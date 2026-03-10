@@ -109,14 +109,21 @@
 3. 放入文件
 4. 重启 Obsidian -> **设置 -> 第三方插件 -> 启用 HikerScrolls**
 
+### 获取 GPX 文件
+
+还没有 GPX 文件？推荐两个工具：
+
+- **[Geo Tracker](https://play.google.com/store/apps/details?id=com.ilyabogdanovich.geotracker)** — 手机端实时记录你的路线轨迹
+- **[gpx.studio](https://gpx.studio/)** — 在浏览器中在线创建和编辑 GPX 轨迹
+
 ### 配置（可选）
 
 在 **设置 -> HikerScrolls** 中：
 
 | 设置 | 用途 |
 |------|------|
-| **Stadia Maps API Key** | 解锁 Stamen/Stadia 地图风格。[stadiamaps.com](https://stadiamaps.com/) 免费获取 |
-| **Gemini API Key** | 启用 AI 功能。[aistudio.google.com](https://aistudio.google.com/) 免费获取 |
+| **Stadia Maps API Key** | 解锁 Stamen/Stadia 地图风格。在 [stadiamaps.com](https://stadiamaps.com/) 获取（有免费额度） |
+| **Gemini API Key** | 启用 AI 功能。在 [aistudio.google.com](https://aistudio.google.com/) 获取（有免费额度） |
 | **Gemini Model** | 使用的模型（默认：`gemini-2.0-flash`） |
 
 ---
